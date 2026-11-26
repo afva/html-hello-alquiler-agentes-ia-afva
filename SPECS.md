@@ -124,10 +124,16 @@ Antes de implementar, la especificación y el sistema de diseño deben revisarse
 
 **Aceptación:** registrar la interpretación confirmada por el usuario, la aprobación documental y la comprobación del commit independiente y su árbol; sin aprobación y checkpoint, la implementación permanece bloqueada. Deberá conservarse la evidencia del HTML histórico sin afirmar que el orden histórico literal se ha modificado.
 
+### R19 | Actividad semanal interactiva del Dashboard (adenda posterior al checkpoint)
+
+Tras el commit `0644497` de `SPECS.md`, el usuario confirmó que la actividad semanal visual forma parte de los requisitos académicos originales. Esta adenda amplía el bloque para convertir las cuatro tarjetas KPI en selectores del gráfico de lunes a domingo. Por defecto estará seleccionado **Ingresos totales**. Al elegir una tarjeta se actualizarán título, leyenda, unidad, escala y barras para ingresos totales, pérdidas por descuentos y cupones, agentes activos o agentes con errores. Las cuatro series contienen siete valores ficticios centralizados explícitamente en `js/data.js` como datos simulados; son independientes de los cálculos mensuales existentes de R03. La tarjeta seleccionada tendrá estado visual y `aria-pressed`; la interacción será operable por teclado y las barras tendrán una transición suave. Las alturas serán proporcionales al máximo de la escala seleccionada y el gráfico indicará que sus datos son simulados. Las series monetarias deberán sumar exactamente el KPI mensual correspondiente: 2400 EUR en ingresos y 150 EUR en descuentos/cupones. Los conteos operativos deberán usar ejes enteros desde cero. Las barras diarias deberán sumar exactamente 13 agentes activos y 6 agentes con errores, y las tarjetas deberán mostrar esas sumas.
+
+**Aceptación:** al seleccionar cada KPI se muestran siete barras coherentes con su unidad y escala, con altura proporcional al valor máximo; el título y la leyenda cambian; ingresos totales está activo al cargar; ambos temas y los tamaños responsive mantienen contraste y no presentan desbordamientos. Se conservan los cálculos originales de R03 y no se añaden librerías de visualización.
+
 ## 4. Fuera de alcance
 
 Autenticación y permisos, integración de backend o APIs, bases de datos, ejecución real de agentes, pagos/facturación real, monitorización en tiempo real, persistencia, búsquedas, filtros, paginación, creación y exportación. Tampoco se implementan las funciones adicionales visibles en Stitch por el mero hecho de aparecer en sus referencias. Ninguna ausencia se presenta como requisito académico no verificado.
 
 ## 5. Trazabilidad y revisión
 
-La correspondencia R → decisión técnica → fase → tarea → validación se mantiene en [specs/tasks.md](specs/tasks.md); [specs/plan.md](specs/plan.md) describe sus dependencias. R18 conserva la interpretación confirmada y exige el checkpoint, sin afirmar que un commit posterior pueda reparar retroactivamente la secuencia histórica.
+La correspondencia R → decisión técnica → fase → tarea → validación se mantiene en [specs/tasks.md](specs/tasks.md); [specs/plan.md](specs/plan.md) describe sus dependencias. R18 conserva la interpretación confirmada y exige el checkpoint, sin afirmar que un commit posterior pueda reparar retroactivamente la secuencia histórica. R19 es una adenda aprobada posterior al checkpoint, sin modificación del commit independiente original.

@@ -50,8 +50,8 @@ El color nunca será el único indicador: cada estado tendrá texto y, cuando pr
 | Campo de texto | Etiqueta persistente, contorno, foco visible, descripción y error cuando corresponda; altura adaptable para el prompt. |
 | Skills expandibles | Control con etiqueta y `aria-expanded`; inicialmente cerrado, transición breve y alternativa sin movimiento si se solicita. |
 
-La referencia combina Lucide y Material Symbols. Se usarán iconos lineales locales y aprobados, sin CDN de iconos ni nueva dependencia. Su selección concreta se realizará durante la implementación dentro de los recursos permitidos; incorporar recursos externos requiere autorización.
+La referencia combina Lucide y Material Symbols. La implementación utiliza símbolos SVG lineales locales en la página, sin CDN de iconos ni nueva dependencia, para navegación y controles; el favicon local está disponible en SVG e ICO. Incorporar recursos externos requiere autorización.
 
-## 5. Validación visual pendiente
+## 5. Validación visual
 
-Revisar ambos temas y los estados de todos los controles; comprobar contraste, foco, accesibilidad por teclado, escalado de texto, ausencia de solapamientos, tablas contenidas y tamaños móvil, tableta y escritorio. Verificar la carga CDN y documentar fallos de red. Comparar las seis vistas con sus capturas sin incorporar acciones excluidas. Las pruebas visuales y de navegador quedan pendientes hasta la implementación.
+Se han revisado ambos temas en Chrome a 320, 768 y 1440 px, el contraste de los pares principales, la navegación por teclado, el foco, las tablas contenidas y la carga del CDN. El Dashboard se ha comparado visualmente con su referencia y refinado, incluyendo el placeholder semanal R19. La regresión comprobó el retorno del foco, los modales y los iconos locales. Quedan pendientes las pruebas con lector de pantalla y otros navegadores. Las referencias Stitch no incorporan funcionalidades excluidas del alcance.

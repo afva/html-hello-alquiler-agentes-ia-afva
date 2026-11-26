@@ -1,0 +1,2318 @@
+<!DOCTYPE html><html lang="es" class="h-full"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgentHub - Plataforma SaaS B2B</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Smooth transitions and scrollbars */
+    * {
+      transition-property: background-color, border-color, color, fill, stroke;
+      transition-duration: 150ms;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(156, 163, 175, 0.5);
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex overflow-hidden font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- Mobile Overlay -->
+  <div id="mobile-overlay" onclick="toggleMobileSidebar()" class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm hidden lg:hidden"></div>
+
+  <!-- SIDEBAR PERSISTENTE -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out">
+    <div class="flex flex-col h-full">
+      <!-- Logo Brand -->
+      <div class="h-16 px-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-600/30">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" class="lucide lucide-cpu w-5 h-5"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+          </div>
+          <div>
+            <span class="text-lg font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">AgentHub</span>
+            <span class="text-[10px] uppercase font-semibold tracking-wider text-brand-600 dark:text-brand-400 block -mt-1">SaaS B2B</span>
+          </div>
+        </div>
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-1.5 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-5 h-5"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Menú Principal</p>
+
+        <button onclick="switchView('dashboard')" id="nav-dashboard" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="layout-dashboard" class="lucide lucide-layout-dashboard w-4 h-4 text-brand-600 dark:text-brand-400"><rect width="7" height="9" x="3" y="3" rx="1"></rect><rect width="7" height="5" x="14" y="3" rx="1"></rect><rect width="7" height="9" x="14" y="12" rx="1"></rect><rect width="7" height="5" x="3" y="16" rx="1"></rect></svg>
+          <span>Dashboard</span>
+        </button>
+
+        <button onclick="switchView('usuarios')" id="nav-usuarios" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="lucide lucide-users w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+          <span>Gestión de usuarios</span>
+        </button>
+
+        <button onclick="switchView('agentes')" id="nav-agentes" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+          <span>Gestión de agentes</span>
+        </button>
+
+        <button onclick="switchView('skills')" id="nav-skills" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+          <span>Skills</span>
+        </button>
+
+        <button onclick="switchView('contrataciones')" id="nav-contrataciones" class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+          <span>Contrataciones</span>
+        </button>
+
+        <button onclick="switchView('errores')" id="nav-errores" class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100">
+          <div class="flex items-center gap-3">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-octagon" class="lucide lucide-alert-octagon w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M12 16h.01"></path><path d="M12 8v4"></path><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"></path></svg>
+            <span>Log de errores</span>
+          </div>
+          <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">7</span>
+        </button>
+      </nav>
+
+      <!-- Sidebar Footer / Environment info -->
+      <div class="p-4 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50">
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></div>
+          <div>
+            <div class="text-xs font-semibold text-slate-700 dark:text-slate-300">Producción EU-West</div>
+            <div class="text-[11px] text-slate-400">Latencia promedio: 38ms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER (Barra superior + Contenido Dinámico) -->
+  <div class="flex-1 lg:pl-64 flex flex-col min-w-0 h-full overflow-hidden">
+
+    <!-- TOPBAR COMPARTIDA -->
+    <header class="h-16 flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between z-30">
+      <div class="flex items-center gap-3">
+        <button onclick="toggleMobileSidebar()" class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu w-5 h-5"><path d="M4 12h16"></path><path d="M4 18h16"></path><path d="M4 6h16"></path></svg>
+        </button>
+        <div class="flex items-center gap-2">
+          <h1 id="topbar-title" class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">Dashboard</h1>
+          
+        </div>
+      </div>
+
+      <!-- Action items: Dark/Light Mode & Admin Avatar -->
+      <div class="flex items-center gap-2 sm:gap-4">
+        <!-- Toggle Dark / Light mode -->
+        <button onclick="toggleTheme()" id="theme-toggle" class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" title="Cambiar tema claro/oscuro">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sun" id="theme-icon-light" class="lucide lucide-sun w-5 h-5 hidden dark:block"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="moon" id="theme-icon-dark" class="lucide lucide-moon w-5 h-5 block dark:hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+        </button>
+
+        <!-- Divider -->
+        <div class="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
+
+        <!-- Admin Profile -->
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-indigo-400 text-white font-medium text-xs flex items-center justify-center shadow-sm">
+              CL
+            </div>
+            <div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900"></div>
+          </div>
+          <div class="hidden md:block text-left">
+            <div class="text-xs font-semibold text-slate-900 dark:text-white leading-tight">Carlos Larrea</div>
+            <div class="text-[11px] text-slate-500 dark:text-slate-400">Super Administrador</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ÁREA CENTRAL DE CONTENIDO DINÁMICO (6 VISTAS) -->
+    <main class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8">
+
+      <!-- ================= VISTA 1: DASHBOARD ================= -->
+      <div id="view-dashboard" class="view-content space-y-6">
+        <!-- Encabezado de la vista -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Panel de Control General</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Métricas operativas y de facturación consolidadas en tiempo real.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="inline-flex items-center px-2.5 py-1 rounded-md text-xs font-medium bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>
+              Sistemas al 99.98%
+            </span>
+          </div>
+        </div>
+
+        <!-- 4 Tarjetas de Indicadores -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+          <!-- Tarjeta 1: Ingresos del mes -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Ingresos del mes</span>
+              <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up w-4 h-4"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+              </div>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">48.250 €</span>
+              <span class="text-xs font-medium text-emerald-600 dark:text-emerald-400 flex items-center">
+                +14.2% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-up-right" class="lucide lucide-arrow-up-right w-3 h-3 ml-0.5"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">vs. mes anterior (42.250 €)</p>
+          </div>
+
+          <!-- Tarjeta 2: Pérdidas por descuentos y cupones -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Pérdidas por descuentos</span>
+              <div class="w-8 h-8 rounded-lg bg-amber-50 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="tag" class="lucide lucide-tag w-4 h-4"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle></svg>
+              </div>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">2.180 €</span>
+              <span class="text-xs font-medium text-amber-600 dark:text-amber-400 flex items-center">
+                4.3% del total
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Promociones Q3 activas</p>
+          </div>
+
+          <!-- Tarjeta 3: Agentes activos -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Agentes activos</span>
+              <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-4 h-4"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+              </div>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">128</span>
+              <span class="text-xs font-medium text-brand-600 dark:text-brand-400">
+                94.8% en flota
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">+12 desplegados esta semana</p>
+          </div>
+
+          <!-- Tarjeta 4: Agentes con fallos -->
+          <div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm hover:shadow transition-shadow">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Agentes con fallos</span>
+              <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-triangle" class="lucide lucide-alert-triangle w-4 h-4"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+              </div>
+            </div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class="text-2xl sm:text-3xl font-bold tracking-tight text-rose-600 dark:text-rose-400">7</span>
+              <button onclick="switchView('errores')" class="text-xs font-medium text-brand-600 dark:text-brand-400 hover:underline">
+                Ver incidentes →
+              </button>
+            </div>
+            <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">Requieren revisión de prompt o API</p>
+          </div>
+        </div>
+
+        <!-- Contenedor: Actividad semanal (marcador de posición de gráfico) -->
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
+            <div>
+              <h3 class="text-base font-semibold text-slate-900 dark:text-white">Actividad semanal</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Distribución de llamadas a la API de agentes, ejecuciones de skills y rendimiento por día.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="flex items-center gap-1.5 text-xs text-slate-500">
+                <span class="w-2.5 h-2.5 rounded-sm bg-brand-600"></span> Llamadas exitosas
+              </span>
+              <span class="flex items-center gap-1.5 text-xs text-slate-500 ml-2">
+                <span class="w-2.5 h-2.5 rounded-sm bg-slate-300 dark:bg-slate-700"></span> Concurrencia máxima
+              </span>
+            </div>
+          </div>
+
+          <!-- Gráfico SVG elegante simulando Linear / Vercel analytics -->
+          <div class="mt-6 h-64 flex flex-col justify-between">
+            <div class="relative h-48 w-full flex items-end justify-between gap-2 sm:gap-6 pt-4 pb-2 px-2">
+              <!-- Grid lines -->
+              <div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+                <div class="border-b border-dashed border-slate-400 w-full"></div>
+                <div class="border-b border-dashed border-slate-400 w-full"></div>
+                <div class="border-b border-dashed border-slate-400 w-full"></div>
+                <div class="border-b border-dashed border-slate-400 w-full"></div>
+              </div>
+
+              <!-- Bar 1: Lun -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 65%;" class="w-full bg-brand-500/80 group-hover:bg-brand-600 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-500">Lun</span>
+              </div>
+              <!-- Bar 2: Mar -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 78%;" class="w-full bg-brand-500/80 group-hover:bg-brand-600 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-500">Mar</span>
+              </div>
+              <!-- Bar 3: Mié -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 92%;" class="w-full bg-brand-600 group-hover:bg-brand-700 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-500">Mié</span>
+              </div>
+              <!-- Bar 4: Jue -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 84%;" class="w-full bg-brand-500/80 group-hover:bg-brand-600 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-500">Jue</span>
+              </div>
+              <!-- Bar 5: Vie -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 98%;" class="w-full bg-brand-600 group-hover:bg-brand-700 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-400">Vie</span>
+              </div>
+              <!-- Bar 6: Sáb -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 45%;" class="w-full bg-slate-300 dark:bg-slate-700 group-hover:bg-brand-400 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-400">Sáb</span>
+              </div>
+              <!-- Bar 7: Dom -->
+              <div class="flex-1 flex flex-col items-center gap-2 h-full justify-end z-10 group">
+                <div class="w-full max-w-[42px] bg-slate-100 dark:bg-slate-800 rounded-t flex flex-col justify-end overflow-hidden h-full">
+                  <div style="height: 38%;" class="w-full bg-slate-300 dark:bg-slate-700 group-hover:bg-brand-400 transition-all rounded-t"></div>
+                </div>
+                <span class="text-xs text-slate-400">Dom</span>
+              </div>
+            </div>
+
+            <!-- Footer summary of the chart -->
+            <div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <span>Total ejecuciones semanales: <strong class="text-slate-900 dark:text-white">1.842.300 llamadas</strong></span>
+              <span class="text-slate-400">Actualizado hace 3 min</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= VISTA 2: GESTIÓN DE USUARIOS ================= -->
+      <div id="view-usuarios" class="view-content hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Gestión de Usuarios</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Control de clientes B2B, planes contratados y estados de cuenta.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs text-slate-500 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-800">
+              Total: <strong class="text-slate-900 dark:text-white font-semibold">5 cuentas corporativas</strong>
+            </span>
+          </div>
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-900/50 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  <th class="py-3.5 px-4 sm:px-6">Nombre</th>
+                  <th class="py-3.5 px-4 sm:px-6">Email</th>
+                  <th class="py-3.5 px-4 sm:px-6">Plan</th>
+                  <th class="py-3.5 px-4 sm:px-6">Estado</th>
+                  <th class="py-3.5 px-4 sm:px-6 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                BA
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">Banco Santander Tech</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">fintech-devs@santander.es</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">Enterprise Plus</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+              Activo
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-1')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-1" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(1)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(1)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                ME
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">Mercadona Digital</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">infra-cloud@mercadona.com</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">Enterprise</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+              Activo
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-2')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-2" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(2)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(2)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                TE
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">Telefónica Tech</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">ai-ops@telefonica.com</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">Scale</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+              Activo
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-3')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-3" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(3)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(3)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                IN
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">Inditex Global Ops</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">supplychain-ai@inditex.com</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300">Enterprise Plus</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+              Activo
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-4')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-4" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(4)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(4)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                CA
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">Cabify Mobility Corp</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">billing@cabify.com</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">Pro</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500 mr-1.5"></span>
+              Inactivo
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-5')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-5" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(5)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(5)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= VISTA 3: GESTIÓN DE AGENTES ================= -->
+      <div id="view-agentes" class="view-content hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Gestión de Agentes de IA</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Supervisión de agentes desplegados, configuración de prompts de sistema y skills equipadas.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 text-xs text-slate-500 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-lg">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Activos
+              <span class="w-2 h-2 rounded-full bg-amber-500 ml-2"></span> Inactivos
+              <span class="w-2 h-2 rounded-full bg-rose-500 ml-2"></span> Fallando
+            </div>
+          </div>
+        </div>
+
+        <!-- Listado de Agentes -->
+        <div id="agents-list-container" class="space-y-4">
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-5 h-5"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Nexus-SEPA-Auditor</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Activo</span>
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">Banco Santander Tech</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(1)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-brand-600 dark:text-brand-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                  <span>3 Skills equipadas</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" id="agent-chevron-1" class="lucide lucide-chevron-down w-3.5 h-3.5 transition-transform duration-200"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-1')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                  <div id="agent-dd-1" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(1)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sliders" class="lucide lucide-sliders w-3.5 h-3.5 text-brand-600"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></svg> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(1)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-1" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Conciliación Bancaria Automática
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">450 €/mes</span>
+                  </div>
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Detección de Fraude en Pagos
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">800 €/mes</span>
+                  </div>
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Firma y Hash Criptográfico
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">300 €/mes</span>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-5 h-5"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Aura-Customer-Support-L2</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Activo</span>
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">Telefónica Tech</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(2)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-brand-600 dark:text-brand-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                  <span>2 Skills equipadas</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" id="agent-chevron-2" class="lucide lucide-chevron-down w-3.5 h-3.5 transition-transform duration-200"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-2')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                  <div id="agent-dd-2" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(2)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sliders" class="lucide lucide-sliders w-3.5 h-3.5 text-brand-600"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></svg> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(2)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-2" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Soporte Multilingüe en Tiempo Real
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">350 €/mes</span>
+                  </div>
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      RAG sobre Base de Conocimiento
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">600 €/mes</span>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-5 h-5"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Logix-Stock-Forecaster</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-ping"></span>Fallando</span>
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">Mercadona Digital</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(3)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-brand-600 dark:text-brand-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                  <span>2 Skills equipadas</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" id="agent-chevron-3" class="lucide lucide-chevron-down w-3.5 h-3.5 transition-transform duration-200"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-3')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                  <div id="agent-dd-3" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(3)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sliders" class="lucide lucide-sliders w-3.5 h-3.5 text-brand-600"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></svg> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(3)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-3" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Predicción de Demanda Estacional
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">750 €/mes</span>
+                  </div>
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Conector ERP SAP S/4HANA
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">900 €/mes</span>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-5 h-5"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">Devon-Code-Reviewer</h3>
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Inactivo</span>
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">Inditex Global Ops</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(4)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-3.5 h-3.5 text-brand-600 dark:text-brand-400"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+                  <span>1 Skills equipadas</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="chevron-down" id="agent-chevron-4" class="lucide lucide-chevron-down w-3.5 h-3.5 transition-transform duration-200"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-4')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                  </button>
+                  <div id="agent-dd-4" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(4)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sliders" class="lucide lucide-sliders w-3.5 h-3.5 text-brand-600"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></svg> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(4)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-4" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle-2" class="lucide lucide-check-circle-2 w-3.5 h-3.5 text-emerald-500"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+                      Auditoría de Vulnerabilidades SAST
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">500 €/mes</span>
+                  </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= VISTA 4: SKILLS ================= -->
+      <div id="view-skills" class="view-content hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Catálogo de Skills</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Habilidades modulares que potencian las capacidades analíticas y de integración de cada agente.</p>
+          </div>
+        </div>
+
+        <!-- Explicación de qué es una Skill en AgentHub -->
+        <div class="p-4 sm:p-5 rounded-xl bg-gradient-to-r from-brand-50 to-indigo-50/50 dark:from-brand-950/40 dark:to-slate-900 border border-brand-200/70 dark:border-brand-900/50 flex items-start gap-4">
+          <div class="w-10 h-10 rounded-lg bg-brand-600 text-white flex-shrink-0 flex items-center justify-center shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-5 h-5"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-brand-900 dark:text-brand-200">¿Qué es una Skill en el contexto de AgentHub?</h3>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+              Una <strong>Skill</strong> es un paquete modular de ejecución (Function Calling, conectores API, modelos de embedding o pipelines RAG) que se acopla a un agente inteligente para otorgarle capacidades especializadas en producción (como emitir transferencias SEPA, consultar bases vectoriales o auditar contratos inteligentes).
+            </p>
+          </div>
+        </div>
+
+        <!-- Grid de catálogo de Skills -->
+        <div id="skills-grid-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="receipt" class="lucide lucide-receipt w-4 h-4"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-1')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-1" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(1)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(1)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Conciliación Bancaria Automática</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Cruza extractos de cuenta con libros mayores y detecta discrepancias de céntimos en tiempo real.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              42 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="shield-alert" class="lucide lucide-shield-alert w-4 h-4"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="M12 8v4"></path><path d="M12 16h.01"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-2')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-2" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(2)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(2)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Detección de Fraude en Pagos</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Modelos de machine learning que bloquean transacciones sospechosas mediante heurísticas avanzadas.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              31 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="key" class="lucide lucide-key w-4 h-4"><path d="m15.5 7.5 2.3 2.3a1 1 0 0 0 1.4 0l2.1-2.1a1 1 0 0 0 0-1.4L19 4"></path><path d="m21 2-9.6 9.6"></path><circle cx="7.5" cy="15.5" r="5.5"></circle></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-3')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-3" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(3)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(3)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Firma y Hash Criptográfico</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Validación de contratos y transacciones con sellado de tiempo y certificados X.509.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              25 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="globe" class="lucide lucide-globe w-4 h-4"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-4')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-4" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(4)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(4)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Soporte Multilingüe en Tiempo Real</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Traducción y atención al cliente simultánea en más de 40 idiomas con control de tono.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              68 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="database" class="lucide lucide-database w-4 h-4"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M3 5V19A9 3 0 0 0 21 19V5"></path><path d="M3 12A9 3 0 0 0 21 12"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-5')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-5" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(5)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(5)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">RAG sobre Base de Conocimiento</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Embeddings vectoriales de alta precisión para responder documentación corporativa confidencial.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              54 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trending-up" class="lucide lucide-trending-up w-4 h-4"><path d="M16 7h6v6"></path><path d="m22 7-8.5 8.5-5-5L2 17"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-6')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-6" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(6)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(6)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Predicción de Demanda Estacional</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Algoritmos probabilísticos para optimización de cadenas de suministro y almacenes.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              18 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" class="lucide lucide-cpu w-4 h-4"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-7')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-7" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(7)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(7)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Conector ERP SAP S/4HANA</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Integración nativa mediante OData y RFC sin necesidad de middleware intermedio.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              14 agentes
+            </span>
+          </div>
+        </div>
+      
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="code" class="lucide lucide-code w-4 h-4"><path d="m16 18 6-6-6-6"></path><path d="m8 6-6 6 6 6"></path></svg>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-8')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                </button>
+                <div id="skill-dd-8" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(8)" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5 text-brand-600"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(8)" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="trash-2" class="lucide lucide-trash-2 w-3.5 h-3.5"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path><line x1="10" x2="10" y1="11" y2="17"></line><line x1="14" x2="14" y1="11" y2="17"></line></svg> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">Auditoría de Vulnerabilidades SAST</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Escaneo continuo de pull requests en GitHub Enterprise y GitLab CI/CD.</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              29 agentes
+            </span>
+          </div>
+        </div>
+      </div>
+      </div>
+
+      <!-- ================= VISTA 5: CONTRATACIONES ================= -->
+      <div id="view-contrataciones" class="view-content hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Contratos y Alquileres</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Registro de contratos activos y pasados de agentes de IA con desglose de facturación por skills.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+              Total Facturado: 48.250 €
+            </span>
+          </div>
+        </div>
+
+        <!-- Tabla de contrataciones -->
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-900/50 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  <th class="py-3.5 px-4 sm:px-6">Cliente</th>
+                  <th class="py-3.5 px-4 sm:px-6">Agente Alquilado</th>
+                  <th class="py-3.5 px-4 sm:px-6">Skills Contratadas</th>
+                  <th class="py-3.5 px-4 sm:px-6">Fecha Inicio</th>
+                  <th class="py-3.5 px-4 sm:px-6">Fecha Fin</th>
+                  <th class="py-3.5 px-4 sm:px-6">Importe Pagado</th>
+                  <th class="py-3.5 px-4 sm:px-6 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="contracts-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Banco Santander Tech</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Nexus-SEPA-Auditor</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Conciliación Bancaria</span>
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Detección de Fraude</span>
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Firma Criptográfica</span>
+              
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">01/01/2024</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">31/12/2024</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">45.000 €</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('CTR-2024-001')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Mercadona Digital</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Logix-Stock-Forecaster</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Predicción Demanda</span>
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Conector SAP S/4HANA</span>
+              
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">15/02/2024</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">15/08/2024</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">19.500 €</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('CTR-2024-042')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Telefónica Tech</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Aura-Customer-Support-L2</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Soporte Multilingüe</span>
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">RAG Base Conocimiento</span>
+              
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">01/03/2024</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">01/09/2024</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">14.100 €</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('CTR-2024-089')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Cabify Mobility Corp</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">Devon-Code-Reviewer</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Auditoría SAST</span>
+              
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">01/10/2023</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">01/04/2024</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">10.200 €</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('CTR-2023-112')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="eye" class="lucide lucide-eye w-3.5 h-3.5"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= VISTA 6: LOG DE ERRORES ================= -->
+      <div id="view-errores" class="view-content hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Log de Errores e Incidencias</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Registro de trazas de ejecución en producción, timeouts de modelos y fallos de llamadas de función.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="marcarTodosResueltos()" class="text-xs font-medium px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+              Marcar todos como revisados
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabla de errores -->
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden">
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="border-b border-slate-200 dark:border-slate-800 bg-slate-50/75 dark:bg-slate-900/50 text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  <th class="py-3.5 px-4 sm:px-6">Fecha y Hora</th>
+                  <th class="py-3.5 px-4 sm:px-6">Agente</th>
+                  <th class="py-3.5 px-4 sm:px-6">Tipo de Error</th>
+                  <th class="py-3.5 px-4 sm:px-6">Descripción</th>
+                  <th class="py-3.5 px-4 sm:px-6">Gravedad</th>
+                  <th class="py-3.5 px-4 sm:px-6 text-right">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="errors-table-body" class="divide-y divide-slate-100 dark:divide-slate-800">
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">24/10/2024 14:32:10</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Logix-Stock-Forecaster</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">Timeout API Externa</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">Gateway Timeout 504 al consultar endpoint OData de SAP S/4HANA tras 30.000ms.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">Crítica</span></td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-ERR-701')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+              </button>
+              <div id="err-dd-ERR-701" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('ERR-701')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-3.5 h-3.5 text-brand-600"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('ERR-701')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" class="lucide lucide-check-circle w-3.5 h-3.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">24/10/2024 13:15:45</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Nexus-SEPA-Auditor</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">Fallo Validación Schema</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">El payload XML SEPA no cumplió la norma ISO 20022 pain.001.001.03 (nodo <dbtracct> ausente).</dbtracct></td>
+            <td class="py-4 px-4 sm:px-6"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300">Alta</span></td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-ERR-702')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+              </button>
+              <div id="err-dd-ERR-702" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('ERR-702')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-3.5 h-3.5 text-brand-600"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('ERR-702')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" class="lucide lucide-check-circle w-3.5 h-3.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">24/10/2024 11:08:22</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Aura-Customer-Support-L2</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">Exceso Rate Limit</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">Límite de tokens por minuto (TPM) alcanzado en proveedor LLM upstream.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">Media</span></td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-ERR-703')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+              </button>
+              <div id="err-dd-ERR-703" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('ERR-703')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-3.5 h-3.5 text-brand-600"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('ERR-703')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" class="lucide lucide-check-circle w-3.5 h-3.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">23/10/2024 18:40:01</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">Nexus-SEPA-Auditor</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">Firma HMAC Inválida</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">Discrepancia en cabecera X-Hub-Signature-256 en webhook de confirmación.</td>
+            <td class="py-4 px-4 sm:px-6"><span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">Baja</span></td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-ERR-704')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="more-vertical" class="lucide lucide-more-vertical w-4 h-4"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+              </button>
+              <div id="err-dd-ERR-704" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('ERR-704')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-3.5 h-3.5 text-brand-600"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('ERR-704')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check-circle" class="lucide lucide-check-circle w-3.5 h-3.5"><path d="M21.801 10A10 10 0 1 1 17 3.335"></path><path d="m9 11 3 3L22 4"></path></svg> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ================= MODALES SUPERPUESTOS ================= -->
+
+  <!-- Backdrop común para modales -->
+  <div id="modal-backdrop" onclick="closeAllModals()" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+
+    <!-- Modal 1: Detalle de Usuario -->
+    <div id="modal-user-detail" onclick="event.stopPropagation()" class="hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          </div>
+          <h3 class="text-base font-semibold text-slate-900 dark:text-white">Ficha de Usuario</h3>
+        </div>
+        <button onclick="closeAllModals()" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div id="modal-user-content" class="p-6 space-y-4 text-sm">
+        <!-- Rellenado por JS -->
+      </div>
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <button onclick="closeAllModals()" class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors">
+          Cerrar
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal 2: Configurar Prompt de Sistema de Agente -->
+    <div id="modal-agent-config" onclick="event.stopPropagation()" class="hidden w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-4 h-4"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg>
+          </div>
+          <div>
+            <h3 id="modal-agent-title" class="text-base font-semibold text-slate-900 dark:text-white">Prompt de Sistema del Agente</h3>
+            <p id="modal-agent-subtitle" class="text-xs text-slate-500">Configuración interna del LLM</p>
+          </div>
+        </div>
+        <button onclick="closeAllModals()" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">System Instructions &amp; Guardrails</label>
+          <div class="relative">
+            <textarea id="modal-agent-prompt" rows="9" class="w-full bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl p-4 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed custom-scrollbar selection:bg-brand-600 selection:text-white"></textarea>
+          </div>
+          <p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">Temperatura predeterminada: 0.2 • Modelo base: Claude 3.5 Sonnet / GPT-4o Enterprise</p>
+        </div>
+      </div>
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <span id="prompt-saved-alert" class="text-xs text-emerald-600 dark:text-emerald-400 font-medium hidden flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check w-3.5 h-3.5"><path d="M20 6 9 17l-5-5"></path></svg> Cambios guardados localmente
+        </span>
+        <div class="flex items-center gap-2 ml-auto">
+          <button onclick="closeAllModals()" class="px-4 py-2 text-xs font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+            Cancelar
+          </button>
+          <button onclick="guardarPromptAgente()" class="px-4 py-2 text-xs font-medium rounded-lg bg-brand-600 hover:bg-brand-700 text-white transition-colors shadow-sm">
+            Guardar configuración
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal 3: Detalle de Skill -->
+    <div id="modal-skill-detail" onclick="event.stopPropagation()" class="hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-4 h-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+          </div>
+          <h3 id="modal-skill-name" class="text-base font-semibold text-slate-900 dark:text-white">Detalle de la Skill</h3>
+        </div>
+        <button onclick="closeAllModals()" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div id="modal-skill-content" class="p-6 space-y-4 text-sm">
+        <!-- Rellenado por JS -->
+      </div>
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <button onclick="closeAllModals()" class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors">
+          Cerrar
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal 4: Detalle de Contrato (Desglose de Skills y Precios) -->
+    <div id="modal-contract-detail" onclick="event.stopPropagation()" class="hidden w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="receipt" class="lucide lucide-receipt w-4 h-4"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg>
+          </div>
+          <h3 class="text-base font-semibold text-slate-900 dark:text-white">Desglose de Contratación</h3>
+        </div>
+        <button onclick="closeAllModals()" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div id="modal-contract-content" class="p-6 space-y-5 text-sm">
+        <!-- Rellenado por JS -->
+      </div>
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+        <span class="text-xs text-slate-500">Facturación recurrente mensual</span>
+        <button onclick="closeAllModals()" class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors">
+          Entendido
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal 5: Detalle de Traza de Error -->
+    <div id="modal-error-detail" onclick="event.stopPropagation()" class="hidden w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bug" class="lucide lucide-bug w-4 h-4"><path d="m8 2 1.88 1.88"></path><path d="M14.12 3.88 16 2"></path><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"></path><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"></path><path d="M12 20v-9"></path><path d="M6.53 9C4.6 8.8 3 7.1 3 5"></path><path d="M6 13H2"></path><path d="M3 21c0-2.1 1.7-3.9 3.8-4"></path><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"></path><path d="M22 13h-4"></path><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"></path></svg>
+          </div>
+          <div>
+            <h3 class="text-base font-semibold text-slate-900 dark:text-white">Traza Completa de Incidencia</h3>
+            <p id="modal-error-meta" class="text-xs text-slate-500">Log detallado del stack trace</p>
+          </div>
+        </div>
+        <button onclick="closeAllModals()" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-6 space-y-4">
+        <div class="bg-slate-950 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto custom-scrollbar border border-slate-800 leading-relaxed" id="modal-error-trace">
+          <!-- Stack trace inyectado -->
+        </div>
+      </div>
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+        <span class="text-xs text-slate-500">ID de correlación: <code class="text-brand-500 font-mono">ag-err-98842</code></span>
+        <button onclick="closeAllModals()" class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors">
+          Cerrar
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ================= JAVASCRIPT VANILLA INTERACTIVO (SPA) ================= -->
+  <script>
+    // --- ESTADO Y DATOS SIMULADOS LOCALMENTE ---
+    const APP_STATE = {
+      currentView: 'dashboard',
+      users: [
+        { id: 1, name: 'Banco Santander Tech', email: 'fintech-devs@santander.es', plan: 'Enterprise Plus', planBadge: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '12 Ene 2024', agentsCount: 42, bill: '18.400 €/mes' },
+        { id: 2, name: 'Mercadona Digital', email: 'infra-cloud@mercadona.com', plan: 'Enterprise', planBadge: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '03 Feb 2024', agentsCount: 28, bill: '12.800 €/mes' },
+        { id: 3, name: 'Telefónica Tech', email: 'ai-ops@telefonica.com', plan: 'Scale', planBadge: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '22 Mar 2024', agentsCount: 35, bill: '9.500 €/mes' },
+        { id: 4, name: 'Inditex Global Ops', email: 'supplychain-ai@inditex.com', plan: 'Enterprise Plus', planBadge: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '15 Abr 2024', agentsCount: 19, bill: '6.200 €/mes' },
+        { id: 5, name: 'Cabify Mobility Corp', email: 'billing@cabify.com', plan: 'Pro', planBadge: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300', status: 'Inactivo', statusBadge: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300', joined: '01 Jun 2024', agentsCount: 4, bill: '1.350 €/mes' }
+      ],
+      agents: [
+        {
+          id: 1,
+          name: 'Nexus-SEPA-Auditor',
+          owner: 'Banco Santander Tech',
+          status: 'activo',
+          skills: [
+            { name: 'Conciliación Bancaria Automática', price: '450 €' },
+            { name: 'Detección de Fraude en Pagos', price: '800 €' },
+            { name: 'Firma y Hash Criptográfico', price: '300 €' }
+          ],
+          prompt: `Eres Nexus-SEPA-Auditor, un agente financiero B2B de alta precisión. Tu labor es verificar transferencias XML ISO 20022, comprobar balances contables y alertar ante incongruencias de IBAN o desvíos mayores al 0.01%. Mantén el tono neutro, respuestas en formato JSON RFC-8259 y rechaza cualquier operación que carezca de token HMAC-SHA256 validado.`
+        },
+        {
+          id: 2,
+          name: 'Aura-Customer-Support-L2',
+          owner: 'Telefónica Tech',
+          status: 'activo',
+          skills: [
+            { name: 'Soporte Multilingüe en Tiempo Real', price: '350 €' },
+            { name: 'RAG sobre Base de Conocimiento', price: '600 €' }
+          ],
+          prompt: `Eres Aura, agente de soporte técnico de nivel 2 para infraestructura de telecomunicaciones. Diagnostica cortes de fibra, routers ONT y latencia WAN. Solicita siempre el ID de abonado antes de escalar tickets a ingeniería.`
+        },
+        {
+          id: 3,
+          name: 'Logix-Stock-Forecaster',
+          owner: 'Mercadona Digital',
+          status: 'fallando',
+          skills: [
+            { name: 'Predicción de Demanda Estacional', price: '750 €' },
+            { name: 'Conector ERP SAP S/4HANA', price: '900 €' }
+          ],
+          prompt: `Eres Logix, planificador de inventario perecedero. Analizas históricos de ventas, predicción climática de AEMET y calendario festivo para calcular el stock óptimo por centro de distribución.`
+        },
+        {
+          id: 4,
+          name: 'Devon-Code-Reviewer',
+          owner: 'Inditex Global Ops',
+          status: 'inactivo',
+          skills: [
+            { name: 'Auditoría de Vulnerabilidades SAST', price: '500 €' }
+          ],
+          prompt: `Eres Devon, auditor de código estático para microservicios Java y TypeScript. Detecta inyecciones SQL, dependencias con CVEs críticos y analiza la cobertura de pruebas unitarias.`
+        }
+      ],
+      skills: [
+        { id: 1, name: 'Conciliación Bancaria Automática', desc: 'Cruza extractos de cuenta con libros mayores y detecta discrepancias de céntimos en tiempo real.', agentsCount: 42, icon: 'receipt' },
+        { id: 2, name: 'Detección de Fraude en Pagos', desc: 'Modelos de machine learning que bloquean transacciones sospechosas mediante heurísticas avanzadas.', agentsCount: 31, icon: 'shield-alert' },
+        { id: 3, name: 'Firma y Hash Criptográfico', desc: 'Validación de contratos y transacciones con sellado de tiempo y certificados X.509.', agentsCount: 25, icon: 'key' },
+        { id: 4, name: 'Soporte Multilingüe en Tiempo Real', desc: 'Traducción y atención al cliente simultánea en más de 40 idiomas con control de tono.', agentsCount: 68, icon: 'globe' },
+        { id: 5, name: 'RAG sobre Base de Conocimiento', desc: 'Embeddings vectoriales de alta precisión para responder documentación corporativa confidencial.', agentsCount: 54, icon: 'database' },
+        { id: 6, name: 'Predicción de Demanda Estacional', desc: 'Algoritmos probabilísticos para optimización de cadenas de suministro y almacenes.', agentsCount: 18, icon: 'trending-up' },
+        { id: 7, name: 'Conector ERP SAP S/4HANA', desc: 'Integración nativa mediante OData y RFC sin necesidad de middleware intermedio.', agentsCount: 14, icon: 'cpu' },
+        { id: 8, name: 'Auditoría de Vulnerabilidades SAST', desc: 'Escaneo continuo de pull requests en GitHub Enterprise y GitLab CI/CD.', agentsCount: 29, icon: 'code' }
+      ],
+      contracts: [
+        {
+          id: 'CTR-2024-001',
+          client: 'Banco Santander Tech',
+          agent: 'Nexus-SEPA-Auditor',
+          skills: [
+            { name: 'Conciliación Bancaria', price: 450 },
+            { name: 'Detección de Fraude', price: 800 },
+            { name: 'Firma Criptográfica', price: 300 }
+          ],
+          baseAgentPrice: 2200,
+          startDate: '01/01/2024',
+          endDate: '31/12/2024',
+          totalAmount: '45.000 €'
+        },
+        {
+          id: 'CTR-2024-042',
+          client: 'Mercadona Digital',
+          agent: 'Logix-Stock-Forecaster',
+          skills: [
+            { name: 'Predicción Demanda', price: 750 },
+            { name: 'Conector SAP S/4HANA', price: 900 }
+          ],
+          baseAgentPrice: 1600,
+          startDate: '15/02/2024',
+          endDate: '15/08/2024',
+          totalAmount: '19.500 €'
+        },
+        {
+          id: 'CTR-2024-089',
+          client: 'Telefónica Tech',
+          agent: 'Aura-Customer-Support-L2',
+          skills: [
+            { name: 'Soporte Multilingüe', price: 350 },
+            { name: 'RAG Base Conocimiento', price: 600 }
+          ],
+          baseAgentPrice: 1400,
+          startDate: '01/03/2024',
+          endDate: '01/09/2024',
+          totalAmount: '14.100 €'
+        },
+        {
+          id: 'CTR-2023-112',
+          client: 'Cabify Mobility Corp',
+          agent: 'Devon-Code-Reviewer',
+          skills: [
+            { name: 'Auditoría SAST', price: 500 }
+          ],
+          baseAgentPrice: 1200,
+          startDate: '01/10/2023',
+          endDate: '01/04/2024',
+          totalAmount: '10.200 €'
+        }
+      ],
+      errors: [
+        {
+          id: 'ERR-701',
+          datetime: '24/10/2024 14:32:10',
+          agent: 'Logix-Stock-Forecaster',
+          type: 'Timeout API Externa',
+          desc: 'Gateway Timeout 504 al consultar endpoint OData de SAP S/4HANA tras 30.000ms.',
+          severity: 'Crítica',
+          resolved: false,
+          trace: `[2024-10-24 14:32:10] CRITICAL: Connection timeout to ERP endpoint https://sap.mercadona.internal/odata/v4/StockService
+Traceback (most recent call last):
+  File "/agent_runtime/core/orchestrator.py", line 142, in execute_skill
+    response = await skill_runner.call_external_tool(tool_id="sap_connector", payload=payload, timeout=30.0)
+  File "/agent_runtime/connectors/http_client.py", line 88, in call_external_tool
+    raise TimeoutError("Endpoint did not respond within specified SLA of 30000ms")
+TimeoutError: Endpoint did not respond within specified SLA of 30000ms
+  at AgentHub.WorkerThread (worker-04.eu-west.agenthub.cloud)`
+        },
+        {
+          id: 'ERR-702',
+          datetime: '24/10/2024 13:15:45',
+          agent: 'Nexus-SEPA-Auditor',
+          type: 'Fallo Validación Schema',
+          desc: 'El payload XML SEPA no cumplió la norma ISO 20022 pain.001.001.03 (nodo <DbtrAcct> ausente).',
+          severity: 'Alta',
+          resolved: false,
+          trace: `[2024-10-24 13:15:45] HIGH_SEVERITY: SchemaValidationError
+XML Validation against XSD failed:
+Line 42: Element '{urn:iso:std:iso:20022:tech:xsd:pain.001.001.03}DbtrAcct': This element is not expected. Expected is ( {urn:iso:std:iso:20022:tech:xsd:pain.001.001.03}Id ).
+Agent rejected payload and emitted AuditFaultException to customer webhook.`
+        },
+        {
+          id: 'ERR-703',
+          datetime: '24/10/2024 11:08:22',
+          agent: 'Aura-Customer-Support-L2',
+          type: 'Exceso Rate Limit',
+          desc: 'Límite de tokens por minuto (TPM) alcanzado en proveedor LLM upstream.',
+          severity: 'Media',
+          resolved: false,
+          trace: `[2024-10-24 11:08:22] WARN: RateLimitError: 429 Too Many Requests
+Supplier: Anthropic Claude Tier 4
+Retry-After: 12 seconds
+AgentHub fallbacked gracefully to secondary cached embeddings.`
+        },
+        {
+          id: 'ERR-704',
+          datetime: '23/10/2024 18:40:01',
+          agent: 'Nexus-SEPA-Auditor',
+          type: 'Firma HMAC Inválida',
+          desc: 'Discrepancia en cabecera X-Hub-Signature-256 en webhook de confirmación.',
+          severity: 'Baja',
+          resolved: false,
+          trace: `[2024-10-23 18:40:01] INFO: Security audit log: HMAC signature mismatch for request req_992384. Request discarded.`
+        }
+      ]
+    };
+
+    // --- NAVEGACIÓN ENTRE VISTAS ---
+    const viewTitles = {
+      'dashboard': 'Dashboard',
+      'usuarios': 'Gestión de usuarios',
+      'agentes': 'Gestión de agentes',
+      'skills': 'Skills',
+      'contrataciones': 'Contrataciones',
+      'errores': 'Log de errores'
+    };
+
+    function switchView(viewId) {
+      APP_STATE.currentView = viewId;
+
+      // Actualizar título en la barra superior
+      const topTitle = document.getElementById('topbar-title');
+      if (topTitle) {
+        topTitle.textContent = viewTitles[viewId] || 'AgentHub';
+      }
+
+      // Ocultar todas las vistas y mostrar la activa
+      document.querySelectorAll('.view-content').forEach(view => {
+        view.classList.add('hidden');
+      });
+      const activeViewEl = document.getElementById('view-' + viewId);
+      if (activeViewEl) {
+        activeViewEl.classList.remove('hidden');
+      }
+
+      // Actualizar estado activo en la barra lateral
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400');
+        // Ícono
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('text-brand-600', 'dark:text-brand-400');
+          icon.classList.add('text-slate-400');
+        }
+      });
+
+      const activeNavBtn = document.getElementById('nav-' + viewId);
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        activeNavBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        const icon = activeNavBtn.querySelector('i');
+        if (icon) {
+          icon.classList.add('text-brand-600', 'dark:text-brand-400');
+          icon.classList.remove('text-slate-400');
+        }
+      }
+
+      // Cerrar mobile sidebar al navegar
+      closeMobileSidebar();
+      closeAllDropdowns();
+      lucide.createIcons();
+    }
+
+    // --- MODO OSCURO / CLARO GLOBAL ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('agenthub-theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('agenthub-theme', 'dark');
+      }
+      lucide.createIcons();
+    }
+
+    // --- SIDEBAR MÓVIL ---
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    function closeMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      if (sidebar && overlay) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    // --- GESTIÓN DE DROPDOWNS ---
+    function closeAllDropdowns() {
+      document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.add('hidden');
+      });
+    }
+
+    // Cerrar dropdowns si se hace clic fuera
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown-trigger') && !e.target.closest('.dropdown-menu')) {
+        closeAllDropdowns();
+      }
+    });
+
+    function toggleDropdown(e, id) {
+      e.stopPropagation();
+      const menu = document.getElementById(id);
+      const isVisible = !menu.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isVisible) {
+        menu.classList.remove('hidden');
+      }
+    }
+
+    // --- GESTIÓN DE MODALES ---
+    function closeAllModals() {
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      document.querySelectorAll('#modal-backdrop > div').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      const alert = document.getElementById('prompt-saved-alert');
+      if (alert) alert.classList.add('hidden');
+    }
+
+    function openModal(modalId) {
+      closeAllDropdowns();
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.remove('hidden');
+      const targetModal = document.getElementById(modalId);
+      if (targetModal) {
+        targetModal.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    // --- RENDERIZADO: VISTA 2 USUARIOS ---
+    function renderUsers() {
+      const tbody = document.getElementById('users-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.users.map(u => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                ${u.name.substring(0, 2).toUpperCase()}
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">${u.name}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">${u.email}</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${u.planBadge}">${u.plan}</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${u.statusBadge}">
+              <span class="w-1.5 h-1.5 rounded-full ${u.status === 'Activo' ? 'bg-emerald-500' : 'bg-amber-500'} mr-1.5"></span>
+              ${u.status}
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-${u.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <i data-lucide="more-vertical" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-${u.id}" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(${u.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <i data-lucide="eye" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(${u.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function verDetalleUsuario(id) {
+      const user = APP_STATE.users.find(u => u.id === id);
+      if (!user) return;
+
+      const content = document.getElementById('modal-user-content');
+      content.innerHTML = `
+        <div class="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div class="w-12 h-12 rounded-xl bg-brand-600 text-white font-bold flex items-center justify-center text-base">
+            ${user.name.substring(0, 2).toUpperCase()}
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-slate-900 dark:text-white">${user.name}</h4>
+            <p class="text-xs text-slate-500 font-mono">${user.email}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div>
+            <span class="text-xs text-slate-400 block">Plan de Suscripción</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.plan}</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Estado de Cuenta</span>
+            <span class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">${user.status}</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Agentes Contratados</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.agentsCount} instancias</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Facturación Mensual</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.bill}</span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-xs text-slate-400 block">Fecha de Registro</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">${user.joined} (vía onboarding corporativo)</span>
+          </div>
+        </div>
+      `;
+      openModal('modal-user-detail');
+    }
+
+    function eliminarUsuario(id) {
+      if (confirm('¿Deseas dar de baja a este cliente B2B y suspender sus agentes asociados?')) {
+        APP_STATE.users = APP_STATE.users.filter(u => u.id !== id);
+        renderUsers();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 3 AGENTES ---
+    function renderAgents() {
+      const container = document.getElementById('agents-list-container');
+      if (!container) return;
+
+      container.innerHTML = APP_STATE.agents.map(agent => {
+        let statusBadge = '';
+        if (agent.status === 'activo') {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Activo</span>';
+        } else if (agent.status === 'inactivo') {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Inactivo</span>';
+        } else {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-ping"></span>Fallando</span>';
+        }
+
+        return `
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">${agent.name}</h3>
+                    ${statusBadge}
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">${agent.owner}</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(${agent.id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>${agent.skills.length} Skills equipadas</span>
+                  <i id="agent-chevron-${agent.id}" data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-${agent.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                  </button>
+                  <div id="agent-dd-${agent.id}" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(${agent.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-600"></i> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(${agent.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-${agent.id}" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                ${agent.skills.map(sk => `
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                      ${sk.name}
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">${sk.price}/mes</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAgentSkills(id) {
+      const panel = document.getElementById(`agent-skills-panel-${id}`);
+      const chevron = document.getElementById(`agent-chevron-${id}`);
+      if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        panel.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+      lucide.createIcons();
+    }
+
+    let currentEditingAgent = null;
+
+    function abrirConfigurarAgente(id) {
+      const agent = APP_STATE.agents.find(a => a.id === id);
+      if (!agent) return;
+      currentEditingAgent = agent;
+
+      document.getElementById('modal-agent-title').textContent = `Prompt de Sistema: ${agent.name}`;
+      document.getElementById('modal-agent-subtitle').textContent = `Propietario: ${agent.owner}`;
+      document.getElementById('modal-agent-prompt').value = agent.prompt;
+
+      openModal('modal-agent-config');
+    }
+
+    function guardarPromptAgente() {
+      if (currentEditingAgent) {
+        currentEditingAgent.prompt = document.getElementById('modal-agent-prompt').value;
+        const alert = document.getElementById('prompt-saved-alert');
+        alert.classList.remove('hidden');
+        setTimeout(() => {
+          closeAllModals();
+        }, 800);
+      }
+    }
+
+    function eliminarAgente(id) {
+      if (confirm('¿Seguro que deseas eliminar este agente de la flota?')) {
+        APP_STATE.agents = APP_STATE.agents.filter(a => a.id !== id);
+        renderAgents();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 4 SKILLS ---
+    function renderSkills() {
+      const grid = document.getElementById('skills-grid-container');
+      if (!grid) return;
+
+      grid.innerHTML = APP_STATE.skills.map(skill => `
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <i data-lucide="${skill.icon || 'sparkles'}" class="w-4 h-4"></i>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-${skill.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                </button>
+                <div id="skill-dd-${skill.id}" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(${skill.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(${skill.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">${skill.name}</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">${skill.desc}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              ${skill.agentsCount} agentes
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function verDetalleSkill(id) {
+      const skill = APP_STATE.skills.find(s => s.id === id);
+      if (!skill) return;
+
+      document.getElementById('modal-skill-name').textContent = skill.name;
+      const content = document.getElementById('modal-skill-content');
+      content.innerHTML = `
+        <div class="space-y-3">
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${skill.desc}</p>
+          <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800 text-xs space-y-1">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Agentes con esta skill:</span>
+              <strong class="text-slate-800 dark:text-slate-200 font-semibold">${skill.agentsCount} agentes</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Tipo de integración:</span>
+              <span class="text-brand-600 dark:text-brand-400 font-medium">Tool Function Calling (REST / Webhook)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Tiempo medio de ejecución:</span>
+              <span class="text-slate-800 dark:text-slate-200">140ms</span>
+            </div>
+          </div>
+        </div>
+      `;
+      openModal('modal-skill-detail');
+    }
+
+    function eliminarSkill(id) {
+      if (confirm('¿Deseas despublicar esta skill del catálogo?')) {
+        APP_STATE.skills = APP_STATE.skills.filter(s => s.id !== id);
+        renderSkills();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 5 CONTRATACIONES ---
+    function renderContracts() {
+      const tbody = document.getElementById('contracts-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.contracts.map(c => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">${c.client}</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${c.agent}</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              ${c.skills.map(s => `
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">${s.name}</span>
+              `).join('')}
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">${c.startDate}</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">${c.endDate}</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">${c.totalAmount}</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function verDetalleContrato(contractId) {
+      const contract = APP_STATE.contracts.find(c => c.id === contractId);
+      if (!contract) return;
+
+      const content = document.getElementById('modal-contract-content');
+      content.innerHTML = `
+        <div class="border-b border-slate-100 dark:border-slate-800 pb-3 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-base text-slate-900 dark:text-white">${contract.client}</h4>
+            <p class="text-xs text-slate-400">Contrato Ref: ${contract.id}</p>
+          </div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">Vigente</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div>
+            <span class="text-slate-400 block">Agente Base</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200">${contract.agent} (${contract.baseAgentPrice} €/mes)</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block">Periodo</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200">${contract.startDate} al ${contract.endDate}</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">Desglose de Skills Contratadas y Precios</span>
+          <div class="bg-slate-50 dark:bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800 space-y-2">
+            ${contract.skills.map(sk => `
+              <div class="flex justify-between items-center text-xs py-1 border-b border-slate-100 dark:border-slate-800/80 last:border-0">
+                <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-brand-500"></i> ${sk.name}
+                </span>
+                <span class="font-mono font-semibold text-slate-900 dark:text-white">+${sk.price} €/mes</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-2 text-sm font-bold text-slate-900 dark:text-white border-t border-slate-100 dark:border-slate-800">
+          <span>Importe Total Acumulado:</span>
+          <span class="text-base text-brand-600 dark:text-brand-400">${contract.totalAmount}</span>
+        </div>
+      `;
+      openModal('modal-contract-detail');
+    }
+
+    // --- RENDERIZADO: VISTA 6 ERRORES ---
+    function renderErrors() {
+      const tbody = document.getElementById('errors-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.errors.map(err => {
+        let badge = '';
+        if (err.severity === 'Crítica') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">Crítica</span>';
+        } else if (err.severity === 'Alta') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300">Alta</span>';
+        } else if (err.severity === 'Media') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">Media</span>';
+        } else {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">Baja</span>';
+        }
+
+        const isResolvedStyle = err.resolved ? 'opacity-50 line-through' : '';
+
+        return `
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ${isResolvedStyle}">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">${err.datetime}</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">${err.agent}</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">${err.type}</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">${err.desc}</td>
+            <td class="py-4 px-4 sm:px-6">${badge}</td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-${err.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <i data-lucide="more-vertical" class="w-4 h-4"></i>
+              </button>
+              <div id="err-dd-${err.id}" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('${err.id}')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <i data-lucide="terminal" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('${err.id}')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function verDetalleError(id) {
+      const err = APP_STATE.errors.find(e => e.id === id);
+      if (!err) return;
+
+      document.getElementById('modal-error-meta').textContent = `${err.agent} • ${err.datetime} • ${err.type}`;
+      document.getElementById('modal-error-trace').textContent = err.trace;
+      openModal('modal-error-detail');
+    }
+
+    function marcarResuelto(id) {
+      const err = APP_STATE.errors.find(e => e.id === id);
+      if (err) {
+        err.resolved = true;
+        renderErrors();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    function marcarTodosResueltos() {
+      APP_STATE.errors.forEach(e => e.resolved = true);
+      renderErrors();
+      lucide.createIcons();
+    }
+
+    // --- INICIALIZACIÓN AL CARGAR LA PÁGINA ---
+    document.addEventListener('DOMContentLoaded', function() {
+      // Comprobar preferencia de tema almacenada
+      const savedTheme = localStorage.getItem('agenthub-theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+
+      // Renderizar datos en las vistas
+      renderUsers();
+      renderAgents();
+      renderSkills();
+      renderContracts();
+      renderErrors();
+
+      // Cargar vista inicial (Dashboard)
+      switchView('dashboard');
+    });
+  </script>
+
+
+
+
+</body></html>

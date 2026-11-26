@@ -41,8 +41,16 @@
 ## DEC-006 | Antecedente académico de Git
 
 - **Fecha:** 2026-11-25. **Estado:** interpretación confirmada por el usuario; no consta confirmación académica independiente.
-- **Evidencia:** `0dfaf38` registró un `index.html` de plantilla con «Hello World»; `a9b4fe4` lo eliminó. El marcador actual `index.html` está vacío y sin seguimiento. El historial consultado para ambos archivos no muestra un commit de especificación anterior a ese HTML de plantilla.
+- **Evidencia:** `0dfaf38` registró un `index.html` de plantilla con «Hello World»; `a9b4fe4` lo eliminó. Antes de implementar, el nuevo `index.html` era un marcador vacío sin seguimiento; ahora contiene la implementación de AgentHub, posterior al checkpoint. El historial consultado para ambos archivos no muestra un commit de especificación anterior al HTML de plantilla.
 - **Interpretación:** el usuario confirmó que la plantilla genérica no es implementación de AgentHub y no incumple el requisito académico. Esta confirmación no modifica el orden histórico ni acredita una resolución externa.
 - **Checkpoint:** el commit `0644497` registra exclusivamente `SPECS.md`, aprobado por el usuario; se verificó su contenido. No modifica el orden histórico ni acredita una resolución externa.
 - **Restricción:** no iniciar implementación sin autorización posterior y cumplimiento de R18. No borrar el marcador ni reescribir historial para ocultar el antecedente.
 - **Referencias:** R18; F01 y T01–T02. Todo commit requiere autorización expresa.
+
+## DEC-007 | Placeholder semanal del Dashboard
+
+- **Fecha:** 2026-11-25. **Estado:** aprobado por el usuario como requisito académico original y aplicado como adenda posterior al checkpoint.
+- **Contexto:** la especificación versionada en `0644497` omitió el bloque semanal que el usuario confirma como parte del requisito académico; el enunciado completo no está reproducido en los documentos disponibles del repositorio.
+- **Decisión:** agregar R19 sin reescribir ni reemplazar el commit original. El Dashboard contiene una representación semanal estática inspirada en Stitch, con siete días, retícula, leyenda y aviso de que las barras son ilustrativas. No contiene actividad medida, totales ni indicador de tiempo real; no cambia el modelo de `js/data.js` ni los cuatro KPI.
+- **Justificación:** cubrir el requisito visual confirmado sin inventar datos funcionales ni modificar la arquitectura.
+- **Referencias:** R19 en [SPECS.md](../SPECS.md), T17 y V12 en [specs/tasks.md](../specs/tasks.md).

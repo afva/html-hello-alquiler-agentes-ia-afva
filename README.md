@@ -1,41 +1,39 @@
-# HTML Hello
+# AgentHub | Panel de administración
 
-The most basic boilerplate for any 4Geeks Academy student, start your very first website from scratch.
+AgentHub es un prototipo frontend interactivo para supervisar una plataforma de alquiler de agentes de inteligencia artificial. Está orientado a la administración y utiliza exclusivamente datos ficticios locales; no se conecta a servicios de negocio ni ejecuta agentes reales.
 
-> There is a video tutorial on [how to use this template to create your very first website here](https://youtu.be/dfbDCMu_p-0).
+## Funcionalidades
 
-## What to do next?
+- **Dashboard:** indicadores de ingresos, descuentos, agentes activos y agentes con fallos, calculados a partir de los datos simulados, además de un placeholder visual de actividad semanal sin métricas reales.
+- **Usuarios:** listado, detalle y eliminación simulada cuando no existen referencias que la impidan.
+- **Agentes:** estado, propietario, skills expandibles y configuración de un system prompt.
+- **Skills:** catálogo, detalle y número de agentes asociados.
+- **Contrataciones:** clientes, agentes, fechas y desglose económico mensual.
+- **Log de errores:** gravedad, detalle técnico simulado y resolución sin eliminar el historial.
 
-Create an `index.html` file with the [basic HTML structure](http://4geeks.com/lesson/what-is-html-learn-html#page-structure) and see it live by running a web-server using the following command:
+La interfaz incorpora navegación adaptable, modo claro y oscuro, menús, modales y acciones accesibles por teclado. Las eliminaciones requieren confirmación y no producen cascadas.
+
+## Arquitectura y tecnologías
+
+La aplicación es una SPA de una sola página HTML con layout compartido y seis vistas. Emplea HTML5, Tailwind CSS mediante CDN, JavaScript Vanilla, CSS complementario e iconos SVG locales. No requiere frameworks, compilación ni dependencias npm.
+
+Los datos iniciales están centralizados en `js/data.js`. El estado y las operaciones se mantienen en memoria y se restauran al recargar la página. Los módulos de `js/` separan navegación, tema, menús, modales, componentes expandibles e inicialización. La arquitectura detallada se describe en [docs/architecture.md](docs/architecture.md).
+
+## Ejecución
+
+Se necesita un navegador moderno y conexión a Internet para cargar Tailwind desde su CDN. La aplicación puede abrirse directamente desde `index.html`; en un contenedor o Codespaces es más práctico servir los archivos estáticos:
 
 ```bash
-$ pip3 install flask && python3 server.py
+python3 -m http.server 8000 --bind 0.0.0.0
 ```
 
-- You can create as many HTML files as you want.
-- You can also create CSS files and import them into your website using a `<link>` tag placed between the `<head></head>` tags, like this:
+Abre `http://localhost:8000/` o el puerto reenviado por Codespaces. El servidor solo entrega archivos estáticos y no implementa servicios de negocio. Para detenerlo, pulsa `Ctrl+C` en su terminal.
 
-```html
-<head>
-  ...
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  ...
-</head>
-```
+## Documentación y estado
 
-- If you want to use Tailwind CSS, add it optionally via the official Tailwind CSS v4 CDN inside the same `<head>`:
+- [SPECS.md](SPECS.md): requisitos y criterios de aceptación.
+- [docs/design-system.md](docs/design-system.md): sistema visual aprobado.
+- [specs/tasks.md](specs/tasks.md): tareas y trazabilidad.
+- [memory-bank/progress.md](memory-bank/progress.md): progreso, validaciones y observación académica.
 
-```html
-<head>
-  ...
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  ...
-</head>
-```
-
-### Contributors
-
-This template was built as part of the [Full Stack Developer course](https://4geeksacademy.com/us/coding-bootcamps/part-time-full-stack-developer) at [4Geeks Academy Coding Bootcamp](https://4geeksacademy.com/us/coding-bootcamp) by [Alejandro Sanchez](https://twitter.com/alesanchezr) and [many other contributors](https://github.com/4GeeksAcademy/html-hello/graphs/contributors).
-
-You can find other templates and resources like this at the [school's GitHub page](https://github.com/4geeksacademy/).
+El prototipo está implementado con datos simulados. La entrega requiere registrar y publicar los cambios autorizados; la confirmación académica externa sobre el HTML de plantilla anterior continúa pendiente.

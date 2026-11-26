@@ -15,7 +15,7 @@ Aplicar en cada vista y componente la secuencia **descomposición → estructura
 | F02 · Base compartida | F01 y autorización de implementación | Descomponer y construir layout, carga, datos ficticios, navegación, tema y componentes compartidos. Entregable: esqueleto accesible con datos coherentes. | R01, R02, R09, R10, R13, R15–R17; AT01–AT06 | Base y componentes validados en aislamiento. |
 | F03 · Consultas | F02 | Construir progresivamente Dashboard, Usuarios y Skills, incluidos detalles y estados vacíos. | R03, R04, R06, R14–R17; AT01–AT06 | Tres vistas con datos y cálculos comprobados. |
 | F04 · Operaciones | F02 y datos de F03 cuando se necesiten | Construir Agentes, Contrataciones y Log de errores; integrar expansión, configuración, confirmación de eliminación, bloqueos y resolución. | R05, R07–R12, R14–R17; AT01–AT06 | Seis vistas y acciones simuladas completas. |
-| F05 · Integración y entrega | F03 y F04 | Recorrer todos los requisitos, validar datos, accesibilidad, responsive, red, consola, cambios y documentación. | R01–R18; AT01–AT07 | Evidencia de validación y revisión de pendientes; solo entonces proponer cierre. |
+| F05 · Integración, refinamiento y entrega | F03 y F04 | Refinar el Dashboard con la adenda R19; validar datos, accesibilidad, responsive, red, consola, cambios y documentación. | R01–R19; AT01–AT07 | Evidencia de validación y revisión de pendientes; solo entonces proponer cierre. |
 
 La interpretación del HTML histórico ha sido confirmada por el usuario; no consta confirmación académica independiente. F02 requiere la aprobación documental, el checkpoint y autorización de implementación. Las tareas documentales o de revisión no dependen de implementar la aplicación.
 

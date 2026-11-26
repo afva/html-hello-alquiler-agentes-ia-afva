@@ -1,0 +1,1338 @@
+<!DOCTYPE html><html class="h-full" lang="es"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>AgentHub - Plataforma SaaS B2B</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Lucide Icons CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              200: '#c7d2fe',
+              300: '#a5b4fc',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              800: '#3730a3',
+              900: '#312e81',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    /* Smooth transitions and scrollbars */
+    * {
+      transition-property: background-color, border-color, color, fill, stroke;
+      transition-duration: 150ms;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(156, 163, 175, 0.3);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(156, 163, 175, 0.5);
+    }
+  </style>
+<meta content="web_dashboard" name="shell-type"></head>
+<body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 flex overflow-hidden font-sans antialiased selection:bg-brand-500 selection:text-white">
+<!-- Mobile Overlay -->
+<div class="fixed inset-0 z-40 bg-slate-900/60 backdrop-blur-sm hidden lg:hidden" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+<!-- SIDEBAR PERSISTENTE -->
+<aside class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out" id="sidebar">
+<div class="flex flex-col h-full">
+<!-- Logo Brand -->
+<div class="h-16 px-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800/80">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-xl bg-brand-600 flex items-center justify-center text-white shadow-md shadow-brand-600/30">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="cpu" class="lucide lucide-cpu w-5 h-5"><path d="M12 20v2"></path><path d="M12 2v2"></path><path d="M17 20v2"></path><path d="M17 2v2"></path><path d="M2 12h2"></path><path d="M2 17h2"></path><path d="M2 7h2"></path><path d="M20 12h2"></path><path d="M20 17h2"></path><path d="M20 7h2"></path><path d="M7 20v2"></path><path d="M7 2v2"></path><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="8" y="8" width="8" height="8" rx="1"></rect></svg>
+</div>
+<div>
+<span class="text-lg font-bold tracking-tight bg-gradient-to-r from-slate-900 to-slate-700 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">AgentHub</span>
+<span class="text-[10px] uppercase font-semibold tracking-wider text-brand-600 dark:text-brand-400 block -mt-1">SaaS B2B</span>
+</div>
+</div>
+<button class="lg:hidden p-1.5 text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="toggleMobileSidebar()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-5 h-5"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+<p class="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Menú Principal</p>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100" id="nav-dashboard" onclick="switchView('dashboard')">
+<i class="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300" data-lucide="layout-dashboard"></i>
+<span>Dashboard</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100" id="nav-usuarios" onclick="switchView('usuarios')">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="users" class="lucide lucide-users w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>
+<span>Gestión de usuarios</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100" id="nav-agentes" onclick="switchView('agentes')">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bot" class="lucide lucide-bot w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M12 8V4H8"></path><rect width="16" height="12" x="4" y="8" rx="2"></rect><path d="M2 14h2"></path><path d="M20 14h2"></path><path d="M15 13v2"></path><path d="M9 13v2"></path></svg>
+<span>Gestión de agentes</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group bg-brand-50 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300" id="nav-skills" onclick="switchView('skills')">
+<i class="w-4 h-4 text-brand-600 dark:text-brand-400" data-lucide="sparkles"></i>
+<span>Skills</span>
+</button>
+<button class="nav-item w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100" id="nav-contrataciones" onclick="switchView('contrataciones')">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="briefcase" class="lucide lucide-briefcase w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect></svg>
+<span>Contrataciones</span>
+</button>
+<button class="nav-item w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium transition-all group text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-slate-100" id="nav-errores" onclick="switchView('errores')">
+<div class="flex items-center gap-3">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="alert-octagon" class="lucide lucide-alert-octagon w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:text-slate-500 dark:group-hover:text-slate-300"><path d="M12 16h.01"></path><path d="M12 8v4"></path><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"></path></svg>
+<span>Log de errores</span>
+</div>
+<span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 dark:bg-rose-950 text-rose-700 dark:text-rose-300">7</span>
+</button>
+</nav>
+<!-- Sidebar Footer / Environment info -->
+<div class="p-4 border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-900/50">
+<div class="flex items-center gap-3">
+<div class="w-2.5 h-2.5 rounded-full bg-emerald-500 ring-4 ring-emerald-500/20"></div>
+<div>
+<div class="text-xs font-semibold text-slate-700 dark:text-slate-300">Producción EU-West</div>
+<div class="text-[11px] text-slate-400">Latencia promedio: 38ms</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN WRAPPER (Barra superior + Contenido Dinámico) -->
+<div class="flex-1 lg:pl-64 flex flex-col min-w-0 h-full overflow-hidden">
+<!-- TOPBAR COMPARTIDA -->
+<header class="h-16 flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 flex items-center justify-between z-30">
+<div class="flex items-center gap-3">
+<button class="lg:hidden p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg" onclick="toggleMobileSidebar()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="menu" class="lucide lucide-menu w-5 h-5"><path d="M4 12h16"></path><path d="M4 18h16"></path><path d="M4 6h16"></path></svg>
+</button>
+<div class="flex items-center gap-2">
+<h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight" id="topbar-title">AgentHub - Skills</h1>
+
+</div>
+</div>
+<!-- Action items: Dark/Light Mode & Admin Avatar -->
+<div class="flex items-center gap-2 sm:gap-4">
+<!-- Toggle Dark / Light mode -->
+<button class="p-2 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" id="theme-toggle" onclick="toggleTheme()" title="Cambiar tema claro/oscuro">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sun" class="lucide lucide-sun w-5 h-5 hidden dark:block" id="theme-icon-light"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="moon" class="lucide lucide-moon w-5 h-5 block dark:hidden" id="theme-icon-dark"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>
+</button>
+<!-- Divider -->
+<div class="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
+<!-- Admin Profile -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-600 to-indigo-400 text-white font-medium text-xs flex items-center justify-center shadow-sm">
+              CL
+            </div>
+<div class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-slate-900"></div>
+</div>
+<div class="hidden md:block text-left">
+<div class="text-xs font-semibold text-slate-900 dark:text-white leading-tight">Carlos Larrea</div>
+<div class="text-[11px] text-slate-500 dark:text-slate-400">Super Administrador</div>
+</div>
+</div>
+</div>
+</header>
+<!-- ÁREA CENTRAL DE CONTENIDO DINÁMICO (6 VISTAS) -->
+<main class="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-6 lg:p-8"><div class="flex flex-col w-full">
+<div class="max-w-[1440px] w-full mx-auto flex flex-col gap-space-xl">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg">
+<div class="flex flex-col gap-space-sm max-w-2xl">
+<div class="flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-primary bg-primary-fixed px-2.5 py-1 rounded-lg">Módulos &amp; Extensiones</span>
+<span class="font-label-md text-label-md text-on-surface-variant">•</span>
+<span class="font-label-md text-label-md text-on-surface-variant" id="skills-total-counter">8 skills activas</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Catálogo de Skills</h2>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="relative min-w-[240px] flex-1 sm:flex-initial">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full h-10 pl-9 pr-4 rounded-xl bg-surface-container-lowest text-on-surface font-body-md text-body-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary/20" id="skill-search-input" oninput="filtrarSkills(this.value)" placeholder="Buscar skill o capacidad..." type="text">
+</div>
+<button class="h-10 px-4 rounded-xl bg-primary text-on-primary font-label-lg text-label-lg flex items-center gap-space-sm shadow-sm hover:bg-primary-container transition-colors" onclick="abrirNuevaSkillModal()">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Nueva Skill</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-low rounded-xl p-space-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-space-lg relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-48 h-48 rounded-full bg-primary/5 blur-2xl pointer-events-none"></div>
+<div class="flex items-start gap-space-md relative z-10 max-w-3xl">
+<div class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h3 class="font-title-md text-title-md text-on-surface">¿Qué es una Skill en AgentHub?</h3>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Las skills son módulos ejecutables e integraciones estandarizadas (APIs, conectores ERP, bases vectoriales y herramientas criptográficas) que amplían de forma modular las capacidades operativas de tus agentes autónomos sin modificar su núcleo.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-space-lg flex-shrink-0 relative z-10 bg-surface-container-lowest px-4 py-3 rounded-xl shadow-sm">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant">Despliegues Totales</span>
+<span class="font-headline-sm text-headline-sm text-on-surface" id="skills-deployments-counter">281</span>
+</div>
+<div class="w-10 h-10 flex items-center justify-center text-primary">
+<svg class="w-10 h-10 -rotate-90" viewBox="0 0 36 36">
+<circle cx="18" cy="18" fill="none" r="15" stroke="currentColor" stroke-opacity="0.15" stroke-width="3.5"></circle>
+<circle cx="18" cy="18" fill="none" r="15" stroke="currentColor" stroke-dasharray="78 100" stroke-linecap="round" stroke-width="3.5"></circle>
+</svg>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="skills-grid-container"><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0 group-hover:bg-amber-500 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">receipt_long</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/60 px-2.5 py-1 rounded-full">Finanzas</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-1')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Conciliación Bancaria Automática</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Cruza extractos de cuenta con libros mayores y detecta discrepancias de céntimos en tiempo real.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">112ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>42 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center flex-shrink-0 group-hover:bg-rose-500 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">shield_lock</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-rose-700 dark:text-rose-300 bg-rose-50 dark:bg-rose-950/60 px-2.5 py-1 rounded-full">Seguridad</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-2')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Detección de Fraude en Pagos</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Modelos de machine learning que bloquean transacciones sospechosas mediante heurísticas avanzadas.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">48ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>31 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">key</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-full">Criptografía</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-3')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Firma y Hash Criptográfico</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Validación de contratos y transacciones con sellado de tiempo y certificados X.509.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">64ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>25 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-sky-50 dark:bg-sky-950/60 text-sky-600 dark:text-sky-400 flex items-center justify-center flex-shrink-0 group-hover:bg-sky-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">translate</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-sky-700 dark:text-sky-300 bg-sky-50 dark:bg-sky-950/60 px-2.5 py-1 rounded-full">CX &amp; Soporte</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-4')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Soporte Multilingüe en Tiempo Real</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Traducción y atención al cliente simultánea en más de 40 idiomas con control de tono.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">185ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>68 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center flex-shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">database</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-purple-700 dark:text-purple-300 bg-purple-50 dark:bg-purple-950/60 px-2.5 py-1 rounded-full">IA &amp; Datos</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-5')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">RAG sobre Base de Conocimiento</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Embeddings vectoriales de alta precisión para responder documentación corporativa confidencial.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">210ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>54 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">trending_up</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-full">Logística</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-6')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Predicción de Demanda Estacional</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Algoritmos probabilísticos para optimización de cadenas de suministro y almacenes.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">320ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>18 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">hub</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-full">Integración ERP</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-7')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Conector ERP SAP S/4HANA</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Integración nativa mediante OData y RFC sin necesidad de middleware intermedio.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">145ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>14 agentes</span></div></div><div class="bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-brand-300 rounded-xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-4 group"><div class="flex flex-col gap-3"><div class="flex items-start justify-between"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined text-[20px]">code</span></div><span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full">DevSecOps</span></div><button onclick="toggleSkillDropdown(event, 'skill-menu-8')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-center transition-colors"><span class="material-symbols-outlined text-[20px]">more_vert</span></button></div><div><h3 class="text-base font-semibold text-slate-900 dark:text-white">Auditoría de Vulnerabilidades SAST</h3><p class="text-sm text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">Escaneo continuo de pull requests en GitHub Enterprise y GitLab CI/CD.</p></div></div><div class="pt-3 flex items-center justify-between border-t border-slate-100 dark:border-slate-800 text-xs"><div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400"><span class="material-symbols-outlined text-[16px]">bolt</span><span class="font-medium">290ms</span></div><span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-brand-50 dark:bg-brand-950/60 text-brand-700 dark:text-brand-300 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>29 agentes</span></div></div></div>
+</div>
+</div>
+<script>
+  (function() {
+    const SKILLS_DATA = [
+      { id: 1, name: 'Conciliación Bancaria Automática', desc: 'Cruza extractos de cuenta con libros mayores y detecta discrepancias de céntimos en tiempo real.', agentsCount: 42, icon: 'receipt_long', category: 'Finanzas', latency: '112ms' },
+      { id: 2, name: 'Detección de Fraude en Pagos', desc: 'Modelos de machine learning que bloquean transacciones sospechosas mediante heurísticas avanzadas.', agentsCount: 31, icon: 'shield_lock', category: 'Seguridad', latency: '48ms' },
+      { id: 3, name: 'Firma y Hash Criptográfico', desc: 'Validación de contratos y transacciones con sellado de tiempo y certificados X.509.', agentsCount: 25, icon: 'key', category: 'Criptografía', latency: '64ms' },
+      { id: 4, name: 'Soporte Multilingüe en Tiempo Real', desc: 'Traducción y atención al cliente simultánea en más de 40 idiomas con control de tono.', agentsCount: 68, icon: 'translate', category: 'CX &amp; Soporte', latency: '185ms' },
+      { id: 5, name: 'RAG sobre Base de Conocimiento', desc: 'Embeddings vectoriales de alta precisión para responder documentación corporativa confidencial.', agentsCount: 54, icon: 'database', category: 'IA &amp; Datos', latency: '210ms' },
+      { id: 6, name: 'Predicción de Demanda Estacional', desc: 'Algoritmos probabilísticos para optimización de cadenas de suministro y almacenes.', agentsCount: 18, icon: 'trending_up', category: 'Logística', latency: '320ms' },
+      { id: 7, name: 'Conector ERP SAP S/4HANA', desc: 'Integración nativa mediante OData y RFC sin necesidad de middleware intermedio.', agentsCount: 14, icon: 'hub', category: 'Integración', latency: '145ms' },
+      { id: 8, name: 'Auditoría de Vulnerabilidades SAST', desc: 'Escaneo continuo de pull requests en GitHub Enterprise y GitLab CI/CD.', agentsCount: 29, icon: 'code', category: 'DevSecOps', latency: '290ms' }
+    ];
+
+    let currentFilter = '';
+
+    function syncShellNavigation() {
+      const topTitle = document.getElementById('topbar-title');
+      if (topTitle) topTitle.textContent = 'Skills';
+
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400');
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('text-brand-600', 'dark:text-brand-400');
+          icon.classList.add('text-slate-400');
+        }
+      });
+
+      const activeNavBtn = document.getElementById('nav-skills');
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        activeNavBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        const icon = activeNavBtn.querySelector('i');
+        if (icon) {
+          icon.classList.add('text-brand-600', 'dark:text-brand-400');
+          icon.classList.remove('text-slate-400');
+        }
+      }
+    }
+
+    function renderSkillsCatalog() {
+      const grid = document.getElementById('skills-grid-container');
+      const totalCounter = document.getElementById('skills-total-counter');
+      const deploymentsCounter = document.getElementById('skills-deployments-counter');
+      if (!grid) return;
+
+      const filtered = SKILLS_DATA.filter(s =>
+        s.name.toLowerCase().includes(currentFilter) ||
+        s.desc.toLowerCase().includes(currentFilter) ||
+        s.category.toLowerCase().includes(currentFilter)
+      );
+
+      if (totalCounter) {
+        totalCounter.textContent = `${filtered.length} ${filtered.length === 1 ? 'skill activa' : 'skills activas'}`;
+      }
+      if (deploymentsCounter) {
+        const sum = filtered.reduce((acc, item) => acc + item.agentsCount, 0);
+        deploymentsCounter.textContent = sum;
+      }
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-surface-container-lowest rounded-xl p-space-xl flex flex-col items-center justify-center text-center shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-surface-container-low text-on-surface-variant flex items-center justify-center mb-3">
+              <span class="material-symbols-outlined">search_off</span>
+            </div>
+            <h4 class="font-title-md text-title-md text-on-surface">No se encontraron skills</h4>
+            <p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Prueba con otro término de búsqueda o limpia el filtro.</p>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(skill => `
+        <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between gap-space-md group">
+          <div class="flex flex-col gap-space-sm">
+            <div class="flex items-start justify-between gap-space-sm">
+              <div class="flex items-center gap-space-sm">
+                <div class="w-10 h-10 rounded-xl bg-primary-fixed text-primary flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-on-primary transition-colors">
+                  <span class="material-symbols-outlined text-[20px]">${skill.icon}</span>
+                </div>
+                <span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant bg-surface-container-low px-2 py-0.5 rounded-lg">${skill.category}</span>
+              </div>
+
+              <div class="relative">
+                <button onclick="toggleSkillDropdown(event, 'skill-menu-${skill.id}')" class="skill-dropdown-trigger w-8 h-8 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low flex items-center justify-center transition-colors" aria-label="Acciones de ${skill.name}">
+                  <span class="material-symbols-outlined text-[20px]">more_vert</span>
+                </button>
+                <div id="skill-menu-${skill.id}" class="skill-dropdown-menu hidden absolute right-0 mt-1 w-40 bg-surface-container-lowest rounded-xl shadow-xl py-1.5 z-40">
+                  <button onclick="verDetalleSkill(${skill.id})" class="w-full px-3.5 py-2 font-label-md text-label-md text-on-surface hover:bg-surface-container-low flex items-center gap-2 text-left transition-colors">
+                    <span class="material-symbols-outlined text-[16px] text-primary">visibility</span>
+                    <span>Ver detalle</span>
+                  </button>
+                  <button onclick="eliminarSkill(${skill.id})" class="w-full px-3.5 py-2 font-label-md text-label-md text-error hover:bg-error-container/40 flex items-center gap-2 text-left transition-colors">
+                    <span class="material-symbols-outlined text-[16px]">delete</span>
+                    <span>Eliminar</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-1">
+              <h3 class="font-title-md text-title-md text-on-surface">${skill.name}</h3>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-1.5 leading-relaxed line-clamp-2">${skill.desc}</p>
+            </div>
+          </div>
+
+          <div class="pt-space-sm flex items-center justify-between">
+            <div class="flex items-center gap-1.5 text-on-surface-variant">
+              <span class="material-symbols-outlined text-[16px]">bolt</span>
+              <span class="font-label-md text-label-md">${skill.latency}</span>
+            </div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary-fixed text-primary font-label-md text-label-md">
+              <span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              ${skill.agentsCount} agentes
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.filtrarSkills = function(val) {
+      currentFilter = val.trim().toLowerCase();
+      renderSkillsCatalog();
+    };
+
+    window.toggleSkillDropdown = function(e, id) {
+      e.stopPropagation();
+      const target = document.getElementById(id);
+      const isHidden = target.classList.contains('hidden');
+      document.querySelectorAll('.skill-dropdown-menu').forEach(m => m.classList.add('hidden'));
+      if (isHidden) {
+        target.classList.remove('hidden');
+      }
+    };
+
+    window.verDetalleSkill = function(id) {
+      const skill = SKILLS_DATA.find(s => s.id === id);
+      if (!skill) return;
+      document.querySelectorAll('.skill-dropdown-menu').forEach(m => m.classList.add('hidden'));
+
+      const titleEl = document.getElementById('modal-skill-name');
+      const contentEl = document.getElementById('modal-skill-content');
+      if (titleEl && contentEl && typeof openModal === 'function') {
+        titleEl.textContent = skill.name;
+        contentEl.innerHTML = `
+          <div class="flex flex-col gap-space-md">
+            <p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">${skill.desc}</p>
+            <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col gap-space-sm">
+              <div class="flex justify-between items-center">
+                <span class="font-label-md text-label-md text-on-surface-variant">Categoría</span>
+                <span class="font-label-md text-label-md text-on-surface">${skill.category}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="font-label-md text-label-md text-on-surface-variant">Agentes habilitados</span>
+                <span class="font-label-md text-label-md text-primary">${skill.agentsCount} agentes</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="font-label-md text-label-md text-on-surface-variant">Latencia media</span>
+                <span class="font-label-md text-label-md text-on-surface">${skill.latency}</span>
+              </div>
+            </div>
+          </div>
+        `;
+        openModal('modal-skill-detail');
+      }
+    };
+
+    window.eliminarSkill = function(id) {
+      document.querySelectorAll('.skill-dropdown-menu').forEach(m => m.classList.add('hidden'));
+      const idx = SKILLS_DATA.findIndex(s => s.id === id);
+      if (idx !== -1) {
+        SKILLS_DATA.splice(idx, 1);
+        renderSkillsCatalog();
+      }
+    };
+
+    window.abrirNuevaSkillModal = function() {
+      const newId = SKILLS_DATA.length ? Math.max(...SKILLS_DATA.map(s => s.id)) + 1 : 1;
+      SKILLS_DATA.unshift({
+        id: newId,
+        name: 'Conector Webhook Personalizado',
+        desc: 'Disparador de eventos HTTP firmado con HMAC-SHA256 para flujos de automatización externa.',
+        agentsCount: 1,
+        icon: 'webhook',
+        category: 'Integración',
+        latency: '75ms'
+      });
+      renderSkillsCatalog();
+    };
+
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.skill-dropdown-trigger') && !e.target.closest('.skill-dropdown-menu')) {
+        document.querySelectorAll('.skill-dropdown-menu').forEach(m => m.classList.add('hidden'));
+      }
+    });
+
+    syncShellNavigation();
+    renderSkillsCatalog();
+  })();
+</script></main>
+</div>
+<!-- ================= MODALES SUPERPUESTOS ================= -->
+<!-- Backdrop común para modales -->
+<div class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4" id="modal-backdrop" onclick="closeAllModals()">
+<!-- Modal 1: Detalle de Usuario -->
+<div class="hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all" id="modal-user-detail" onclick="event.stopPropagation()">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="user" class="lucide lucide-user w-4 h-4"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+</div>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">Ficha de Usuario</h3>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="closeAllModals()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 space-y-4 text-sm" id="modal-user-content">
+<!-- Rellenado por JS -->
+</div>
+<div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+<button class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors" onclick="closeAllModals()">
+          Cerrar
+        </button>
+</div>
+</div>
+<!-- Modal 2: Configurar Prompt de Sistema de Agente -->
+<div class="hidden w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all" id="modal-agent-config" onclick="event.stopPropagation()">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="terminal" class="lucide lucide-terminal w-4 h-4"><path d="M12 19h8"></path><path d="m4 17 6-6-6-6"></path></svg>
+</div>
+<div>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white" id="modal-agent-title">Prompt de Sistema del Agente</h3>
+<p class="text-xs text-slate-500" id="modal-agent-subtitle">Configuración interna del LLM</p>
+</div>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="closeAllModals()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 space-y-4">
+<div>
+<label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">System Instructions &amp; Guardrails</label>
+<div class="relative">
+<textarea class="w-full bg-slate-900 text-emerald-400 font-mono text-xs rounded-xl p-4 border border-slate-700 focus:outline-none focus:ring-2 focus:ring-brand-500 leading-relaxed custom-scrollbar selection:bg-brand-600 selection:text-white" id="modal-agent-prompt" rows="9"></textarea>
+</div>
+<p class="text-[11px] text-slate-400 dark:text-slate-500 mt-2">Temperatura predeterminada: 0.2 • Modelo base: Claude 3.5 Sonnet / GPT-4o Enterprise</p>
+</div>
+</div>
+<div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<span class="text-xs text-emerald-600 dark:text-emerald-400 font-medium hidden flex items-center gap-1" id="prompt-saved-alert">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="check" class="lucide lucide-check w-3.5 h-3.5"><path d="M20 6 9 17l-5-5"></path></svg> Cambios guardados localmente
+        </span>
+<div class="flex items-center gap-2 ml-auto">
+<button class="px-4 py-2 text-xs font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors" onclick="closeAllModals()">
+            Cancelar
+          </button>
+<button class="px-4 py-2 text-xs font-medium rounded-lg bg-brand-600 hover:bg-brand-700 text-white transition-colors shadow-sm" onclick="guardarPromptAgente()">
+            Guardar configuración
+          </button>
+</div>
+</div>
+</div>
+<!-- Modal 3: Detalle de Skill -->
+<div class="hidden w-full max-w-lg bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all" id="modal-skill-detail" onclick="event.stopPropagation()">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="sparkles" class="lucide lucide-sparkles w-4 h-4"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path><path d="M20 3v4"></path><path d="M22 5h-4"></path><path d="M4 17v2"></path><path d="M5 18H3"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white" id="modal-skill-name">Detalle de la Skill</h3>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="closeAllModals()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 space-y-4 text-sm" id="modal-skill-content">
+<!-- Rellenado por JS -->
+</div>
+<div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+<button class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors" onclick="closeAllModals()">
+          Cerrar
+        </button>
+</div>
+</div>
+<!-- Modal 4: Detalle de Contrato (Desglose de Skills y Precios) -->
+<div class="hidden w-full max-w-xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all" id="modal-contract-detail" onclick="event.stopPropagation()">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-brand-50 dark:bg-brand-950 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="receipt" class="lucide lucide-receipt w-4 h-4"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"></path><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 17.5v-11"></path></svg>
+</div>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">Desglose de Contratación</h3>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="closeAllModals()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 space-y-5 text-sm" id="modal-contract-content">
+<!-- Rellenado por JS -->
+</div>
+<div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="text-xs text-slate-500">Facturación recurrente mensual</span>
+<button class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors" onclick="closeAllModals()">
+          Entendido
+        </button>
+</div>
+</div>
+<!-- Modal 5: Detalle de Traza de Error -->
+<div class="hidden w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transform transition-all" id="modal-error-detail" onclick="event.stopPropagation()">
+<div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="bug" class="lucide lucide-bug w-4 h-4"><path d="m8 2 1.88 1.88"></path><path d="M14.12 3.88 16 2"></path><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"></path><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"></path><path d="M12 20v-9"></path><path d="M6.53 9C4.6 8.8 3 7.1 3 5"></path><path d="M6 13H2"></path><path d="M3 21c0-2.1 1.7-3.9 3.8-4"></path><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"></path><path d="M22 13h-4"></path><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"></path></svg>
+</div>
+<div>
+<h3 class="text-base font-semibold text-slate-900 dark:text-white">Traza Completa de Incidencia</h3>
+<p class="text-xs text-slate-500" id="modal-error-meta">Log detallado del stack trace</p>
+</div>
+</div>
+<button class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onclick="closeAllModals()">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="x" class="lucide lucide-x w-4 h-4"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+</button>
+</div>
+<div class="p-6 space-y-4">
+<div class="bg-slate-950 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto custom-scrollbar border border-slate-800 leading-relaxed" id="modal-error-trace">
+<!-- Stack trace inyectado -->
+</div>
+</div>
+<div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="text-xs text-slate-500">ID de correlación: <code class="text-brand-500 font-mono">ag-err-98842</code></span>
+<button class="px-4 py-2 text-xs font-medium rounded-lg bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 transition-colors" onclick="closeAllModals()">
+          Cerrar
+        </button>
+</div>
+</div>
+</div>
+<!-- ================= JAVASCRIPT VANILLA INTERACTIVO (SPA) ================= -->
+<script>
+    // --- ESTADO Y DATOS SIMULADOS LOCALMENTE ---
+    const APP_STATE = {
+      currentView: 'dashboard',
+      users: [
+        { id: 1, name: 'Banco Santander Tech', email: 'fintech-devs@santander.es', plan: 'Enterprise Plus', planBadge: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '12 Ene 2024', agentsCount: 42, bill: '18.400 €/mes' },
+        { id: 2, name: 'Mercadona Digital', email: 'infra-cloud@mercadona.com', plan: 'Enterprise', planBadge: 'bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '03 Feb 2024', agentsCount: 28, bill: '12.800 €/mes' },
+        { id: 3, name: 'Telefónica Tech', email: 'ai-ops@telefonica.com', plan: 'Scale', planBadge: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '22 Mar 2024', agentsCount: 35, bill: '9.500 €/mes' },
+        { id: 4, name: 'Inditex Global Ops', email: 'supplychain-ai@inditex.com', plan: 'Enterprise Plus', planBadge: 'bg-purple-100 text-purple-700 dark:bg-purple-950 dark:text-purple-300', status: 'Activo', statusBadge: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300', joined: '15 Abr 2024', agentsCount: 19, bill: '6.200 €/mes' },
+        { id: 5, name: 'Cabify Mobility Corp', email: 'billing@cabify.com', plan: 'Pro', planBadge: 'bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300', status: 'Inactivo', statusBadge: 'bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300', joined: '01 Jun 2024', agentsCount: 4, bill: '1.350 €/mes' }
+      ],
+      agents: [
+        {
+          id: 1,
+          name: 'Nexus-SEPA-Auditor',
+          owner: 'Banco Santander Tech',
+          status: 'activo',
+          skills: [
+            { name: 'Conciliación Bancaria Automática', price: '450 €' },
+            { name: 'Detección de Fraude en Pagos', price: '800 €' },
+            { name: 'Firma y Hash Criptográfico', price: '300 €' }
+          ],
+          prompt: `Eres Nexus-SEPA-Auditor, un agente financiero B2B de alta precisión. Tu labor es verificar transferencias XML ISO 20022, comprobar balances contables y alertar ante incongruencias de IBAN o desvíos mayores al 0.01%. Mantén el tono neutro, respuestas en formato JSON RFC-8259 y rechaza cualquier operación que carezca de token HMAC-SHA256 validado.`
+        },
+        {
+          id: 2,
+          name: 'Aura-Customer-Support-L2',
+          owner: 'Telefónica Tech',
+          status: 'activo',
+          skills: [
+            { name: 'Soporte Multilingüe en Tiempo Real', price: '350 €' },
+            { name: 'RAG sobre Base de Conocimiento', price: '600 €' }
+          ],
+          prompt: `Eres Aura, agente de soporte técnico de nivel 2 para infraestructura de telecomunicaciones. Diagnostica cortes de fibra, routers ONT y latencia WAN. Solicita siempre el ID de abonado antes de escalar tickets a ingeniería.`
+        },
+        {
+          id: 3,
+          name: 'Logix-Stock-Forecaster',
+          owner: 'Mercadona Digital',
+          status: 'fallando',
+          skills: [
+            { name: 'Predicción de Demanda Estacional', price: '750 €' },
+            { name: 'Conector ERP SAP S/4HANA', price: '900 €' }
+          ],
+          prompt: `Eres Logix, planificador de inventario perecedero. Analizas históricos de ventas, predicción climática de AEMET y calendario festivo para calcular el stock óptimo por centro de distribución.`
+        },
+        {
+          id: 4,
+          name: 'Devon-Code-Reviewer',
+          owner: 'Inditex Global Ops',
+          status: 'inactivo',
+          skills: [
+            { name: 'Auditoría de Vulnerabilidades SAST', price: '500 €' }
+          ],
+          prompt: `Eres Devon, auditor de código estático para microservicios Java y TypeScript. Detecta inyecciones SQL, dependencias con CVEs críticos y analiza la cobertura de pruebas unitarias.`
+        }
+      ],
+      skills: [
+        { id: 1, name: 'Conciliación Bancaria Automática', desc: 'Cruza extractos de cuenta con libros mayores y detecta discrepancias de céntimos en tiempo real.', agentsCount: 42, icon: 'receipt' },
+        { id: 2, name: 'Detección de Fraude en Pagos', desc: 'Modelos de machine learning que bloquean transacciones sospechosas mediante heurísticas avanzadas.', agentsCount: 31, icon: 'shield-alert' },
+        { id: 3, name: 'Firma y Hash Criptográfico', desc: 'Validación de contratos y transacciones con sellado de tiempo y certificados X.509.', agentsCount: 25, icon: 'key' },
+        { id: 4, name: 'Soporte Multilingüe en Tiempo Real', desc: 'Traducción y atención al cliente simultánea en más de 40 idiomas con control de tono.', agentsCount: 68, icon: 'globe' },
+        { id: 5, name: 'RAG sobre Base de Conocimiento', desc: 'Embeddings vectoriales de alta precisión para responder documentación corporativa confidencial.', agentsCount: 54, icon: 'database' },
+        { id: 6, name: 'Predicción de Demanda Estacional', desc: 'Algoritmos probabilísticos para optimización de cadenas de suministro y almacenes.', agentsCount: 18, icon: 'trending-up' },
+        { id: 7, name: 'Conector ERP SAP S/4HANA', desc: 'Integración nativa mediante OData y RFC sin necesidad de middleware intermedio.', agentsCount: 14, icon: 'cpu' },
+        { id: 8, name: 'Auditoría de Vulnerabilidades SAST', desc: 'Escaneo continuo de pull requests en GitHub Enterprise y GitLab CI/CD.', agentsCount: 29, icon: 'code' }
+      ],
+      contracts: [
+        {
+          id: 'CTR-2024-001',
+          client: 'Banco Santander Tech',
+          agent: 'Nexus-SEPA-Auditor',
+          skills: [
+            { name: 'Conciliación Bancaria', price: 450 },
+            { name: 'Detección de Fraude', price: 800 },
+            { name: 'Firma Criptográfica', price: 300 }
+          ],
+          baseAgentPrice: 2200,
+          startDate: '01/01/2024',
+          endDate: '31/12/2024',
+          totalAmount: '45.000 €'
+        },
+        {
+          id: 'CTR-2024-042',
+          client: 'Mercadona Digital',
+          agent: 'Logix-Stock-Forecaster',
+          skills: [
+            { name: 'Predicción Demanda', price: 750 },
+            { name: 'Conector SAP S/4HANA', price: 900 }
+          ],
+          baseAgentPrice: 1600,
+          startDate: '15/02/2024',
+          endDate: '15/08/2024',
+          totalAmount: '19.500 €'
+        },
+        {
+          id: 'CTR-2024-089',
+          client: 'Telefónica Tech',
+          agent: 'Aura-Customer-Support-L2',
+          skills: [
+            { name: 'Soporte Multilingüe', price: 350 },
+            { name: 'RAG Base Conocimiento', price: 600 }
+          ],
+          baseAgentPrice: 1400,
+          startDate: '01/03/2024',
+          endDate: '01/09/2024',
+          totalAmount: '14.100 €'
+        },
+        {
+          id: 'CTR-2023-112',
+          client: 'Cabify Mobility Corp',
+          agent: 'Devon-Code-Reviewer',
+          skills: [
+            { name: 'Auditoría SAST', price: 500 }
+          ],
+          baseAgentPrice: 1200,
+          startDate: '01/10/2023',
+          endDate: '01/04/2024',
+          totalAmount: '10.200 €'
+        }
+      ],
+      errors: [
+        {
+          id: 'ERR-701',
+          datetime: '24/10/2024 14:32:10',
+          agent: 'Logix-Stock-Forecaster',
+          type: 'Timeout API Externa',
+          desc: 'Gateway Timeout 504 al consultar endpoint OData de SAP S/4HANA tras 30.000ms.',
+          severity: 'Crítica',
+          resolved: false,
+          trace: `[2024-10-24 14:32:10] CRITICAL: Connection timeout to ERP endpoint https://sap.mercadona.internal/odata/v4/StockService
+Traceback (most recent call last):
+  File "/agent_runtime/core/orchestrator.py", line 142, in execute_skill
+    response = await skill_runner.call_external_tool(tool_id="sap_connector", payload=payload, timeout=30.0)
+  File "/agent_runtime/connectors/http_client.py", line 88, in call_external_tool
+    raise TimeoutError("Endpoint did not respond within specified SLA of 30000ms")
+TimeoutError: Endpoint did not respond within specified SLA of 30000ms
+  at AgentHub.WorkerThread (worker-04.eu-west.agenthub.cloud)`
+        },
+        {
+          id: 'ERR-702',
+          datetime: '24/10/2024 13:15:45',
+          agent: 'Nexus-SEPA-Auditor',
+          type: 'Fallo Validación Schema',
+          desc: 'El payload XML SEPA no cumplió la norma ISO 20022 pain.001.001.03 (nodo <DbtrAcct> ausente).',
+          severity: 'Alta',
+          resolved: false,
+          trace: `[2024-10-24 13:15:45] HIGH_SEVERITY: SchemaValidationError
+XML Validation against XSD failed:
+Line 42: Element '{urn:iso:std:iso:20022:tech:xsd:pain.001.001.03}DbtrAcct': This element is not expected. Expected is ( {urn:iso:std:iso:20022:tech:xsd:pain.001.001.03}Id ).
+Agent rejected payload and emitted AuditFaultException to customer webhook.`
+        },
+        {
+          id: 'ERR-703',
+          datetime: '24/10/2024 11:08:22',
+          agent: 'Aura-Customer-Support-L2',
+          type: 'Exceso Rate Limit',
+          desc: 'Límite de tokens por minuto (TPM) alcanzado en proveedor LLM upstream.',
+          severity: 'Media',
+          resolved: false,
+          trace: `[2024-10-24 11:08:22] WARN: RateLimitError: 429 Too Many Requests
+Supplier: Anthropic Claude Tier 4
+Retry-After: 12 seconds
+AgentHub fallbacked gracefully to secondary cached embeddings.`
+        },
+        {
+          id: 'ERR-704',
+          datetime: '23/10/2024 18:40:01',
+          agent: 'Nexus-SEPA-Auditor',
+          type: 'Firma HMAC Inválida',
+          desc: 'Discrepancia en cabecera X-Hub-Signature-256 en webhook de confirmación.',
+          severity: 'Baja',
+          resolved: false,
+          trace: `[2024-10-23 18:40:01] INFO: Security audit log: HMAC signature mismatch for request req_992384. Request discarded.`
+        }
+      ]
+    };
+
+    // --- NAVEGACIÓN ENTRE VISTAS ---
+    const viewTitles = {
+      'dashboard': 'Dashboard',
+      'usuarios': 'Gestión de usuarios',
+      'agentes': 'Gestión de agentes',
+      'skills': 'Skills',
+      'contrataciones': 'Contrataciones',
+      'errores': 'Log de errores'
+    };
+
+    function switchView(viewId) {
+      APP_STATE.currentView = viewId;
+
+      // Actualizar título en la barra superior
+      const topTitle = document.getElementById('topbar-title');
+      if (topTitle) {
+        topTitle.textContent = viewTitles[viewId] || 'AgentHub';
+      }
+
+      // Ocultar todas las vistas y mostrar la activa
+      document.querySelectorAll('.view-content').forEach(view => {
+        view.classList.add('hidden');
+      });
+      const activeViewEl = document.getElementById('view-' + viewId);
+      if (activeViewEl) {
+        activeViewEl.classList.remove('hidden');
+      }
+
+      // Actualizar estado activo en la barra lateral
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400');
+        // Ícono
+        const icon = btn.querySelector('i');
+        if (icon) {
+          icon.classList.remove('text-brand-600', 'dark:text-brand-400');
+          icon.classList.add('text-slate-400');
+        }
+      });
+
+      const activeNavBtn = document.getElementById('nav-' + viewId);
+      if (activeNavBtn) {
+        activeNavBtn.classList.add('bg-brand-50', 'text-brand-700', 'dark:bg-brand-900/40', 'dark:text-brand-300');
+        activeNavBtn.classList.remove('text-slate-600', 'dark:text-slate-400');
+        const icon = activeNavBtn.querySelector('i');
+        if (icon) {
+          icon.classList.add('text-brand-600', 'dark:text-brand-400');
+          icon.classList.remove('text-slate-400');
+        }
+      }
+
+      // Cerrar mobile sidebar al navegar
+      closeMobileSidebar();
+      closeAllDropdowns();
+      lucide.createIcons();
+    }
+
+    // --- MODO OSCURO / CLARO GLOBAL ---
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        localStorage.setItem('agenthub-theme', 'light');
+      } else {
+        html.classList.add('dark');
+        localStorage.setItem('agenthub-theme', 'dark');
+      }
+      lucide.createIcons();
+    }
+
+    // --- SIDEBAR MÓVIL ---
+    function toggleMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    function closeMobileSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      if (sidebar && overlay) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      }
+    }
+
+    // --- GESTIÓN DE DROPDOWNS ---
+    function closeAllDropdowns() {
+      document.querySelectorAll('.dropdown-menu').forEach(menu => {
+        menu.classList.add('hidden');
+      });
+    }
+
+    // Cerrar dropdowns si se hace clic fuera
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.dropdown-trigger') && !e.target.closest('.dropdown-menu')) {
+        closeAllDropdowns();
+      }
+    });
+
+    function toggleDropdown(e, id) {
+      e.stopPropagation();
+      const menu = document.getElementById(id);
+      const isVisible = !menu.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isVisible) {
+        menu.classList.remove('hidden');
+      }
+    }
+
+    // --- GESTIÓN DE MODALES ---
+    function closeAllModals() {
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.add('hidden');
+      document.querySelectorAll('#modal-backdrop > div').forEach(modal => {
+        modal.classList.add('hidden');
+      });
+      const alert = document.getElementById('prompt-saved-alert');
+      if (alert) alert.classList.add('hidden');
+    }
+
+    function openModal(modalId) {
+      closeAllDropdowns();
+      const backdrop = document.getElementById('modal-backdrop');
+      backdrop.classList.remove('hidden');
+      const targetModal = document.getElementById(modalId);
+      if (targetModal) {
+        targetModal.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    // --- RENDERIZADO: VISTA 2 USUARIOS ---
+    function renderUsers() {
+      const tbody = document.getElementById('users-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.users.map(u => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs flex items-center justify-center border border-slate-200 dark:border-slate-700">
+                ${u.name.substring(0, 2).toUpperCase()}
+              </div>
+              <span class="font-medium text-slate-900 dark:text-white">${u.name}</span>
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 dark:text-slate-400 font-mono text-xs">${u.email}</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${u.planBadge}">${u.plan}</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${u.statusBadge}">
+              <span class="w-1.5 h-1.5 rounded-full ${u.status === 'Activo' ? 'bg-emerald-500' : 'bg-amber-500'} mr-1.5"></span>
+              ${u.status}
+            </span>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-right relative">
+            <button onclick="toggleDropdown(event, 'user-dd-${u.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+              <i data-lucide="more-vertical" class="w-4 h-4"></i>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div id="user-dd-${u.id}" class="dropdown-menu hidden absolute right-6 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+              <button onclick="verDetalleUsuario(${u.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                <i data-lucide="eye" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+              </button>
+              <button onclick="eliminarUsuario(${u.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function verDetalleUsuario(id) {
+      const user = APP_STATE.users.find(u => u.id === id);
+      if (!user) return;
+
+      const content = document.getElementById('modal-user-content');
+      content.innerHTML = `
+        <div class="flex items-center gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div class="w-12 h-12 rounded-xl bg-brand-600 text-white font-bold flex items-center justify-center text-base">
+            ${user.name.substring(0, 2).toUpperCase()}
+          </div>
+          <div>
+            <h4 class="text-base font-bold text-slate-900 dark:text-white">${user.name}</h4>
+            <p class="text-xs text-slate-500 font-mono">${user.email}</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div>
+            <span class="text-xs text-slate-400 block">Plan de Suscripción</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.plan}</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Estado de Cuenta</span>
+            <span class="text-sm font-semibold text-emerald-600 dark:text-emerald-400">${user.status}</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Agentes Contratados</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.agentsCount} instancias</span>
+          </div>
+          <div>
+            <span class="text-xs text-slate-400 block">Facturación Mensual</span>
+            <span class="text-sm font-semibold text-slate-800 dark:text-slate-200">${user.bill}</span>
+          </div>
+          <div class="col-span-2">
+            <span class="text-xs text-slate-400 block">Fecha de Registro</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-300">${user.joined} (vía onboarding corporativo)</span>
+          </div>
+        </div>
+      `;
+      openModal('modal-user-detail');
+    }
+
+    function eliminarUsuario(id) {
+      if (confirm('¿Deseas dar de baja a este cliente B2B y suspender sus agentes asociados?')) {
+        APP_STATE.users = APP_STATE.users.filter(u => u.id !== id);
+        renderUsers();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 3 AGENTES ---
+    function renderAgents() {
+      const container = document.getElementById('agents-list-container');
+      if (!container) return;
+
+      container.innerHTML = APP_STATE.agents.map(agent => {
+        let statusBadge = '';
+        if (agent.status === 'activo') {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span>Activo</span>';
+        } else if (agent.status === 'inactivo') {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300"><span class="w-1.5 h-1.5 rounded-full bg-slate-400 mr-1.5"></span>Inactivo</span>';
+        } else {
+          statusBadge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300"><span class="w-1.5 h-1.5 rounded-full bg-rose-500 mr-1.5 animate-ping"></span>Fallando</span>';
+        }
+
+        return `
+          <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm overflow-hidden transition-all hover:border-slate-300 dark:hover:border-slate-700">
+            <!-- Header card -->
+            <div class="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center flex-shrink-0 border border-brand-200/60 dark:border-brand-900/60">
+                  <i data-lucide="bot" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-slate-900 dark:text-white text-base">${agent.name}</h3>
+                    ${statusBadge}
+                  </div>
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Propietario: <strong class="text-slate-700 dark:text-slate-300 font-semibold">${agent.owner}</strong></p>
+                </div>
+              </div>
+
+              <!-- Acciones y botón toggle skills -->
+              <div class="flex items-center gap-2 self-end sm:self-center">
+                <!-- Botón expandir skills con transición suave -->
+                <button onclick="toggleAgentSkills(${agent.id})" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 transition-colors">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600 dark:text-brand-400"></i>
+                  <span>${agent.skills.length} Skills equipadas</span>
+                  <i id="agent-chevron-${agent.id}" data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-200"></i>
+                </button>
+
+                <!-- Menú desplegable agente -->
+                <div class="relative">
+                  <button onclick="toggleDropdown(event, 'agent-dd-${agent.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                  </button>
+                  <div id="agent-dd-${agent.id}" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                    <button onclick="abrirConfigurarAgente(${agent.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                      <i data-lucide="sliders" class="w-3.5 h-3.5 text-brand-600"></i> Configurar
+                    </button>
+                    <button onclick="eliminarAgente(${agent.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                      <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMPONENTE EXPANDIBLE DE SKILLS (con transición suave) -->
+            <div id="agent-skills-panel-${agent.id}" class="hidden border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-950/40 px-5 py-4 transition-all duration-300">
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-3">Módulos de habilidades activas</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
+                ${agent.skills.map(sk => `
+                  <div class="flex items-center justify-between p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                      <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
+                      ${sk.name}
+                    </span>
+                    <span class="text-[11px] font-mono font-medium text-brand-600 dark:text-brand-400 bg-brand-50 dark:bg-brand-950/60 px-1.5 py-0.5 rounded">${sk.price}/mes</span>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAgentSkills(id) {
+      const panel = document.getElementById(`agent-skills-panel-${id}`);
+      const chevron = document.getElementById(`agent-chevron-${id}`);
+      if (panel.classList.contains('hidden')) {
+        panel.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        panel.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+      lucide.createIcons();
+    }
+
+    let currentEditingAgent = null;
+
+    function abrirConfigurarAgente(id) {
+      const agent = APP_STATE.agents.find(a => a.id === id);
+      if (!agent) return;
+      currentEditingAgent = agent;
+
+      document.getElementById('modal-agent-title').textContent = `Prompt de Sistema: ${agent.name}`;
+      document.getElementById('modal-agent-subtitle').textContent = `Propietario: ${agent.owner}`;
+      document.getElementById('modal-agent-prompt').value = agent.prompt;
+
+      openModal('modal-agent-config');
+    }
+
+    function guardarPromptAgente() {
+      if (currentEditingAgent) {
+        currentEditingAgent.prompt = document.getElementById('modal-agent-prompt').value;
+        const alert = document.getElementById('prompt-saved-alert');
+        alert.classList.remove('hidden');
+        setTimeout(() => {
+          closeAllModals();
+        }, 800);
+      }
+    }
+
+    function eliminarAgente(id) {
+      if (confirm('¿Seguro que deseas eliminar este agente de la flota?')) {
+        APP_STATE.agents = APP_STATE.agents.filter(a => a.id !== id);
+        renderAgents();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 4 SKILLS ---
+    function renderSkills() {
+      const grid = document.getElementById('skills-grid-container');
+      if (!grid) return;
+
+      grid.innerHTML = APP_STATE.skills.map(skill => `
+        <div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200/90 dark:border-slate-800 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between">
+              <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center">
+                <i data-lucide="${skill.icon || 'sparkles'}" class="w-4 h-4"></i>
+              </div>
+              <div class="relative">
+                <button onclick="toggleDropdown(event, 'skill-dd-${skill.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                  <i data-lucide="more-vertical" class="w-4 h-4"></i>
+                </button>
+                <div id="skill-dd-${skill.id}" class="dropdown-menu hidden absolute right-0 mt-1 w-36 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                  <button onclick="verDetalleSkill(${skill.id})" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                    <i data-lucide="eye" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+                  </button>
+                  <button onclick="eliminarSkill(${skill.id})" class="w-full px-3.5 py-2 text-xs text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 flex items-center gap-2">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Eliminar
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h3 class="text-sm font-bold text-slate-900 dark:text-white mt-3">${skill.name}</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1.5 leading-relaxed">${skill.desc}</p>
+          </div>
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs">
+            <span class="text-slate-400">Instalaciones activas</span>
+            <span class="font-semibold px-2 py-0.5 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300">
+              ${skill.agentsCount} agentes
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function verDetalleSkill(id) {
+      const skill = APP_STATE.skills.find(s => s.id === id);
+      if (!skill) return;
+
+      document.getElementById('modal-skill-name').textContent = skill.name;
+      const content = document.getElementById('modal-skill-content');
+      content.innerHTML = `
+        <div class="space-y-3">
+          <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">${skill.desc}</p>
+          <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-lg border border-slate-200 dark:border-slate-800 text-xs space-y-1">
+            <div class="flex justify-between">
+              <span class="text-slate-400">Agentes con esta skill:</span>
+              <strong class="text-slate-800 dark:text-slate-200 font-semibold">${skill.agentsCount} agentes</strong>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Tipo de integración:</span>
+              <span class="text-brand-600 dark:text-brand-400 font-medium">Tool Function Calling (REST / Webhook)</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-slate-400">Tiempo medio de ejecución:</span>
+              <span class="text-slate-800 dark:text-slate-200">140ms</span>
+            </div>
+          </div>
+        </div>
+      `;
+      openModal('modal-skill-detail');
+    }
+
+    function eliminarSkill(id) {
+      if (confirm('¿Deseas despublicar esta skill del catálogo?')) {
+        APP_STATE.skills = APP_STATE.skills.filter(s => s.id !== id);
+        renderSkills();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    // --- RENDERIZADO: VISTA 5 CONTRATACIONES ---
+    function renderContracts() {
+      const tbody = document.getElementById('contracts-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.contracts.map(c => `
+        <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
+          <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">${c.client}</td>
+          <td class="py-4 px-4 sm:px-6">
+            <span class="font-mono text-xs px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">${c.agent}</span>
+          </td>
+          <td class="py-4 px-4 sm:px-6">
+            <div class="flex flex-wrap gap-1 max-w-xs">
+              ${c.skills.map(s => `
+                <span class="text-[11px] px-2 py-0.5 rounded bg-brand-50 text-brand-700 dark:bg-brand-950 dark:text-brand-300">${s.name}</span>
+              `).join('')}
+            </div>
+          </td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">${c.startDate}</td>
+          <td class="py-4 px-4 sm:px-6 text-slate-500 text-xs">${c.endDate}</td>
+          <td class="py-4 px-4 sm:px-6 font-bold text-slate-900 dark:text-white">${c.totalAmount}</td>
+          <td class="py-4 px-4 sm:px-6 text-right">
+            <button onclick="verDetalleContrato('${c.id}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium bg-brand-50 hover:bg-brand-100 dark:bg-brand-950 dark:hover:bg-brand-900 text-brand-700 dark:text-brand-300 transition-colors">
+              <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+              Ver detalle
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function verDetalleContrato(contractId) {
+      const contract = APP_STATE.contracts.find(c => c.id === contractId);
+      if (!contract) return;
+
+      const content = document.getElementById('modal-contract-content');
+      content.innerHTML = `
+        <div class="border-b border-slate-100 dark:border-slate-800 pb-3 flex justify-between items-center">
+          <div>
+            <h4 class="font-bold text-base text-slate-900 dark:text-white">${contract.client}</h4>
+            <p class="text-xs text-slate-400">Contrato Ref: ${contract.id}</p>
+          </div>
+          <span class="text-xs font-bold px-2.5 py-1 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">Vigente</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div>
+            <span class="text-slate-400 block">Agente Base</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200">${contract.agent} (${contract.baseAgentPrice} €/mes)</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block">Periodo</span>
+            <span class="font-semibold text-slate-800 dark:text-slate-200">${contract.startDate} al ${contract.endDate}</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-2">Desglose de Skills Contratadas y Precios</span>
+          <div class="bg-slate-50 dark:bg-slate-950 rounded-xl p-3 border border-slate-200 dark:border-slate-800 space-y-2">
+            ${contract.skills.map(sk => `
+              <div class="flex justify-between items-center text-xs py-1 border-b border-slate-100 dark:border-slate-800/80 last:border-0">
+                <span class="text-slate-700 dark:text-slate-300 flex items-center gap-2">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-brand-500"></i> ${sk.name}
+                </span>
+                <span class="font-mono font-semibold text-slate-900 dark:text-white">+${sk.price} €/mes</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div class="flex justify-between items-center pt-2 text-sm font-bold text-slate-900 dark:text-white border-t border-slate-100 dark:border-slate-800">
+          <span>Importe Total Acumulado:</span>
+          <span class="text-base text-brand-600 dark:text-brand-400">${contract.totalAmount}</span>
+        </div>
+      `;
+      openModal('modal-contract-detail');
+    }
+
+    // --- RENDERIZADO: VISTA 6 ERRORES ---
+    function renderErrors() {
+      const tbody = document.getElementById('errors-table-body');
+      if (!tbody) return;
+
+      tbody.innerHTML = APP_STATE.errors.map(err => {
+        let badge = '';
+        if (err.severity === 'Crítica') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-rose-100 text-rose-700 dark:bg-rose-950 dark:text-rose-300">Crítica</span>';
+        } else if (err.severity === 'Alta') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-orange-100 text-orange-700 dark:bg-orange-950 dark:text-orange-300">Alta</span>';
+        } else if (err.severity === 'Media') {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-amber-100 text-amber-700 dark:bg-amber-950 dark:text-amber-300">Media</span>';
+        } else {
+          badge = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">Baja</span>';
+        }
+
+        const isResolvedStyle = err.resolved ? 'opacity-50 line-through' : '';
+
+        return `
+          <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors ${isResolvedStyle}">
+            <td class="py-4 px-4 sm:px-6 font-mono text-xs text-slate-500">${err.datetime}</td>
+            <td class="py-4 px-4 sm:px-6 font-semibold text-slate-900 dark:text-white">${err.agent}</td>
+            <td class="py-4 px-4 sm:px-6 text-xs font-medium text-rose-600 dark:text-rose-400">${err.type}</td>
+            <td class="py-4 px-4 sm:px-6 text-xs text-slate-600 dark:text-slate-300 max-w-xs truncate">${err.desc}</td>
+            <td class="py-4 px-4 sm:px-6">${badge}</td>
+            <td class="py-4 px-4 sm:px-6 text-right relative">
+              <button onclick="toggleDropdown(event, 'err-dd-${err.id}')" class="dropdown-trigger p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                <i data-lucide="more-vertical" class="w-4 h-4"></i>
+              </button>
+              <div id="err-dd-${err.id}" class="dropdown-menu hidden absolute right-6 mt-1 w-44 bg-white dark:bg-slate-900 rounded-xl shadow-lg border border-slate-200 dark:border-slate-800 py-1.5 z-40 text-left">
+                <button onclick="verDetalleError('${err.id}')" class="w-full px-3.5 py-2 text-xs text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-2">
+                  <i data-lucide="terminal" class="w-3.5 h-3.5 text-brand-600"></i> Ver detalle
+                </button>
+                <button onclick="marcarResuelto('${err.id}')" class="w-full px-3.5 py-2 text-xs text-emerald-600 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 flex items-center gap-2">
+                  <i data-lucide="check-circle" class="w-3.5 h-3.5"></i> Marcar como resuelto
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function verDetalleError(id) {
+      const err = APP_STATE.errors.find(e => e.id === id);
+      if (!err) return;
+
+      document.getElementById('modal-error-meta').textContent = `${err.agent} • ${err.datetime} • ${err.type}`;
+      document.getElementById('modal-error-trace').textContent = err.trace;
+      openModal('modal-error-detail');
+    }
+
+    function marcarResuelto(id) {
+      const err = APP_STATE.errors.find(e => e.id === id);
+      if (err) {
+        err.resolved = true;
+        renderErrors();
+        closeAllDropdowns();
+        lucide.createIcons();
+      }
+    }
+
+    function marcarTodosResueltos() {
+      APP_STATE.errors.forEach(e => e.resolved = true);
+      renderErrors();
+      lucide.createIcons();
+    }
+
+    // --- INICIALIZACIÓN AL CARGAR LA PÁGINA ---
+    document.addEventListener('DOMContentLoaded', function() {
+      // Comprobar preferencia de tema almacenada
+      const savedTheme = localStorage.getItem('agenthub-theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      }
+
+      // Renderizar datos en las vistas
+      renderUsers();
+      renderAgents();
+      renderSkills();
+      renderContracts();
+      renderErrors();
+
+      // Cargar vista inicial (Dashboard)
+      switchView('dashboard');
+    });
+  </script>
+
+
+</body></html>

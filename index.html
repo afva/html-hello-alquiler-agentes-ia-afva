@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>AgentHub | Administraci&oacute;n</title>
+	<link rel="icon" type="image/x-icon" sizes="32x32" href="favicon.ico">
+	<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="css/styles.css">
+	<script defer src="js/data.js"></script>
+	<script defer src="js/navigation.js"></script>
+	<script defer src="js/theme.js"></script>
+	<script defer src="js/dropdowns.js"></script>
+	<script defer src="js/modals.js"></script>
+	<script defer src="js/collapsibles.js"></script>
+	<script defer src="js/app.js"></script>
+</head>
+<body class="min-h-screen bg-slate-50 text-slate-900 antialiased dark:bg-gray-900 dark:text-gray-50">
+	<svg class="icon-sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+		<symbol id="icon-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+		<symbol id="icon-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1M16 5a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 5v1"/></symbol>
+		<symbol id="icon-agents" viewBox="0 0 24 24"><rect x="4" y="7" width="16" height="13" rx="3"/><path d="M12 3v4M9 3h6M2 12h2M20 12h2M8 16h8"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/></symbol>
+		<symbol id="icon-trend" viewBox="0 0 24 24"><path d="M3 17 9 11l4 4 8-9M15 6h6v6"/></symbol>
+		<symbol id="icon-tag" viewBox="0 0 24 24"><path d="M20.6 13.4 11 23l-9-9V2h12l9 9a1.8 1.8 0 0 1-.4 2.4Z"/><circle cx="7" cy="7" r="1"/></symbol>
+		<symbol id="icon-skills" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3ZM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8L19 15ZM5 16v4M3 18h4"/></symbol>
+		<symbol id="icon-contracts" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 13h18M10 13v2h4v-2"/></symbol>
+		<symbol id="icon-errors" viewBox="0 0 24 24"><path d="M12 3 2.7 19a1 1 0 0 0 .9 1.5h16.8a1 1 0 0 0 .9-1.5L12 3ZM12 9v5M12 17h.01"/></symbol>
+		<symbol id="icon-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+		<symbol id="icon-close" viewBox="0 0 24 24"><path d="M5 5l14 14M19 5 5 19"/></symbol>
+		<symbol id="icon-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/></symbol>
+		<symbol id="icon-moon" viewBox="0 0 24 24"><path d="M20 15a8.5 8.5 0 0 1-11-11 8.5 8.5 0 1 0 11 11Z"/></symbol>
+		<symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></symbol>
+	</svg>
+	<div class="app-layout">
+		<div id="sidebar-overlay" class="sidebar-overlay" hidden aria-hidden="true"></div>
+		<aside id="sidebar" class="sidebar bg-white border-r border-slate-200 dark:bg-gray-800 dark:border-gray-500" data-open="false">
+			<div class="brand-header flex h-16 items-center justify-between border-b border-slate-200 px-6 dark:border-gray-500">
+				<div class="brand-lockup flex min-w-0 items-center gap-3">
+					<div class="brand-mark" aria-hidden="true"><svg class="app-icon"><use href="#icon-agents"></use></svg></div>
+					<div class="min-w-0">
+						<p class="brand-name">AgentHub</p>
+						<p class="brand-tagline">SaaS B2B</p>
+					</div>
+				</div>
+				<button id="menu-close" class="menu-close rounded-md p-2 text-slate-600 hover:bg-slate-100 dark:text-gray-300 dark:hover:bg-gray-700" type="button" aria-label="Cerrar navegaci&oacute;n" title="Cerrar navegaci&oacute;n"><svg class="app-icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+			</div>
+			<nav class="px-4 py-6" aria-label="Navegaci&oacute;n principal">
+				<p class="nav-section-label px-3 pb-3 text-xs font-semibold uppercase text-slate-500 dark:text-gray-300">Menú principal</p>
+				<ul class="space-y-1">
+					<li><a class="nav-link" href="#dashboard" data-view="dashboard" aria-current="page"><svg class="app-icon" aria-hidden="true"><use href="#icon-dashboard"></use></svg><span>Dashboard</span></a></li>
+					<li><a class="nav-link" href="#usuarios" data-view="usuarios"><svg class="app-icon" aria-hidden="true"><use href="#icon-users"></use></svg><span>Usuarios</span></a></li>
+					<li><a class="nav-link" href="#agentes" data-view="agentes"><svg class="app-icon" aria-hidden="true"><use href="#icon-agents"></use></svg><span>Agentes</span></a></li>
+					<li><a class="nav-link" href="#skills" data-view="skills"><svg class="app-icon" aria-hidden="true"><use href="#icon-skills"></use></svg><span>Skills</span></a></li>
+					<li><a class="nav-link" href="#contrataciones" data-view="contrataciones"><svg class="app-icon" aria-hidden="true"><use href="#icon-contracts"></use></svg><span>Contrataciones</span></a></li>
+					<li><a class="nav-link" href="#errores" data-view="errores"><svg class="app-icon" aria-hidden="true"><use href="#icon-errors"></use></svg><span>Log de errores</span></a></li>
+				</ul>
+			</nav>
+		</aside>
+		<div class="app-content">
+			<header class="app-header flex h-16 items-center gap-4 border-b border-slate-200 bg-white px-4 sm:px-6 lg:px-8 dark:border-gray-500 dark:bg-gray-800">
+				<button id="menu-toggle" class="menu-toggle rounded-md p-2 text-slate-700 hover:bg-slate-100 dark:text-gray-300 dark:hover:bg-gray-700" type="button" aria-label="Abrir navegaci&oacute;n" aria-controls="sidebar" aria-expanded="false" title="Abrir navegaci&oacute;n"><svg class="app-icon" aria-hidden="true"><use href="#icon-menu"></use></svg></button>
+				<p class="text-sm text-slate-600 dark:text-gray-300">Administraci&oacute;n <span aria-hidden="true">/</span> <span id="page-title" class="font-semibold text-slate-900 dark:text-gray-50">Dashboard</span></p>
+				<div class="header-actions ml-auto flex items-center gap-3 sm:gap-4">
+					<button id="theme-toggle" class="inline-flex h-10 w-10 items-center justify-center rounded-md text-slate-700 hover:bg-slate-100 dark:text-gray-300 dark:hover:bg-gray-700" type="button" aria-label="Modo oscuro" aria-pressed="false" title="Activar modo oscuro"><svg class="app-icon" aria-hidden="true"><use id="theme-icon" href="#icon-moon"></use></svg></button>
+					<span class="header-divider" aria-hidden="true"></span>
+					<div class="admin-profile">
+						<span class="admin-avatar" aria-hidden="true">AD</span>
+						<span class="admin-profile-copy"><span class="admin-profile-name">Administrador</span><span class="admin-profile-role">Panel de AgentHub</span></span>
+					</div>
+				</div>
+			</header>
+			<main id="main-content" class="main-content px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+				<section id="dashboard" data-section="dashboard" aria-labelledby="dashboard-heading">
+					<div class="dashboard-heading-row">
+						<div>
+							<h1 id="dashboard-heading" class="text-2xl font-semibold">Panel de control general</h1>
+							<p class="dashboard-intro">Indicadores económicos y operativos de la plataforma.</p>
+						</div>
+						<span class="data-mode-badge">Datos simulados</span>
+					</div>
+					<div id="dashboard-metrics" class="metric-grid"></div>
+					<section class="activity-panel" aria-labelledby="activity-heading">
+						<div class="activity-header">
+							<div class="activity-heading-copy">
+								<h2 id="activity-heading">Ingresos totales</h2>
+								<p id="activity-unit">Datos simulados · Euros (EUR)</p>
+							</div>
+							<div id="activity-legend" class="activity-legend" aria-label="Leyenda del indicador seleccionado">
+								<span><i class="legend-swatch legend-primary"></i>Ingresos diarios simulados</span>
+							</div>
+						</div>
+						<div id="activity-chart" class="activity-chart" role="img" aria-label="Ingresos totales: evolución diaria simulada de lunes a domingo. Euros."></div>
+						<p class="activity-note">Datos simulados con fines de demostración. No representan operaciones, cobros ni actividad en tiempo real.</p>
+					</section>
+				</section>
+				<section id="usuarios" data-section="usuarios" aria-labelledby="usuarios-heading" hidden>
+					<h1 id="usuarios-heading" class="text-2xl font-semibold">Usuarios</h1>
+					<p id="users-count" class="section-subtitle"></p>
+					<div id="users-content" class="section-content"></div>
+				</section>
+				<section id="agentes" data-section="agentes" aria-labelledby="agentes-heading" hidden>
+					<h1 id="agentes-heading" class="text-2xl font-semibold">Agentes</h1>
+					<p id="agents-count" class="section-subtitle"></p>
+					<div id="agents-content" class="section-content"></div>
+				</section>
+				<section id="skills" data-section="skills" aria-labelledby="skills-heading" hidden>
+					<h1 id="skills-heading" class="text-2xl font-semibold">Skills</h1>
+					<p id="skills-count" class="section-subtitle"></p>
+					<div id="skills-content" class="section-content"></div>
+				</section>
+				<section id="contrataciones" data-section="contrataciones" aria-labelledby="contrataciones-heading" hidden>
+					<h1 id="contrataciones-heading" class="text-2xl font-semibold">Contrataciones</h1>
+					<p id="contracts-count" class="section-subtitle"></p>
+					<div id="contracts-content" class="section-content"></div>
+				</section>
+				<section id="errores" data-section="errores" aria-labelledby="errores-heading" hidden>
+					<h1 id="errores-heading" class="text-2xl font-semibold">Log de errores</h1>
+					<p id="errors-count" class="section-subtitle"></p>
+					<div id="errors-content" class="section-content"></div>
+				</section>
+			</main>
+		</div>
+	</div>
+	<div id="modal-overlay" class="modal-overlay" hidden>
+		<div id="modal-dialog" class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+			<div class="modal-heading">
+				<h2 id="modal-title" class="text-lg font-semibold"></h2>
+				<button id="modal-close" class="icon-button" type="button" aria-label="Cerrar ventana" title="Cerrar ventana"><svg class="app-icon" aria-hidden="true"><use href="#icon-close"></use></svg></button>
+			</div>
+			<div id="modal-body" class="modal-body"></div>
+			<div id="modal-actions" class="modal-actions"></div>
+		</div>
+	</div>
+</body>
+</html>
